@@ -1,0 +1,8 @@
+/users/stud/dhuynh/minidgtd/include/cnpy.h
+/users/stud/dhuynh/minidgtd/bin/MiniDGTD
+/users/stud/dhuynh/minidgtd/lib/internal/libtools.so
+/users/stud/dhuynh/minidgtd/lib/internal/libtemporal_solver.so
+/users/stud/dhuynh/minidgtd/lib/internal/libspatial_solver.so
+/users/stud/dhuynh/minidgtd/lib/internal/libpdes.so
+/users/stud/dhuynh/minidgtd/lib/internal/libprobes.so
+/users/stud/dhuynh/minidgtd/bin/test_MiniDGTD
