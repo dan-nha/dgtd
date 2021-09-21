@@ -9,7 +9,7 @@ add_executable(${test_exec} ${test_sources})
 
 # link libraries to executable
 target_link_libraries(${test_exec} PRIVATE
-  #spatial_solver
+  spatial_solver
   temporal_solver
   #pde
   #tools

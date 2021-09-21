@@ -10,7 +10,7 @@ namespace TD_solver {
 Low_storage_runge_kutta lsrk_solver;
 /**
  * Reference values taken from Matlab nodal DGTD code by Hesthaven
- * and Warburton \cite hesthaven2008nodal .
+ * and Warburton \cite hesthaven2008nodal (e.g. Advec1D.m, Maxwell1D.m)
  * (see also https://github.com/tcew/nodal-dg/tree/master/Codes1.1)
  **/
 
