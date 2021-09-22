@@ -44,6 +44,7 @@ private:
 
   const std::string mesh_name;
 
+  void check_unfound_specifiers();
   std::string get_unfound_specifiers() const;
 };
 

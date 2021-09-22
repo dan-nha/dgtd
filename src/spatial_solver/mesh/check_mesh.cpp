@@ -107,31 +107,7 @@ void Check_mesh::check_specifiers() {
     }
   }
 
-  // Throw errors if there are missing specifiers
-  // --------------------------------------------
-  const std::string unfound_specifiers(this->get_unfound_specifiers());
-  if (!(unfound_specifiers.empty())) {
-    throw Mesh_error(
-        "The following specifiers are missing in the mesh file:\n" +
-            unfound_specifiers,
-        this->mesh_name);
-  }
-}
-//-------------------------------------------------------------------------
-std::string Check_mesh::get_unfound_specifiers() const {
-  std::string unfound_specifiers;
-
-  for (auto &unfound : this->begin_specifier) {
-    if (!unfound.second)
-      unfound_specifiers.append(unfound.first + '\n');
-  }
-
-  for (auto &unfound : this->end_specifier) {
-    if (!unfound.second)
-      unfound_specifiers.append(unfound.first + '\n');
-  }
-  
-  return unfound_specifiers;
+  this->check_unfound_specifiers();
 }
 //-------------------------------------------------------------------------
 void Check_mesh::check_mesh_format() {
@@ -159,5 +135,30 @@ void Check_mesh::check_mesh_format() {
         this->mesh_name);
   }
 }
+//-------------------------------------------------------------------------
+void Check_mesh::check_unfound_specifiers() {
+  const std::string unfound_specifiers(this->get_unfound_specifiers());
+  if (!(unfound_specifiers.empty())) {
+    throw Mesh_error(
+        "The following specifiers are missing in the mesh file:\n" +
+            unfound_specifiers,
+        this->mesh_name);
+  }
+}
+//-------------------------------------------------------------------------
+std::string Check_mesh::get_unfound_specifiers() const {
+  std::string unfound_specifiers;
 
+  for (auto &unfound : this->begin_specifier) {
+    if (!unfound.second)
+      unfound_specifiers.append(unfound.first + '\n');
+  }
+
+  for (auto &unfound : this->end_specifier) {
+    if (!unfound.second)
+      unfound_specifiers.append(unfound.first + '\n');
+  }
+  
+  return unfound_specifiers;
+}
 } // namespace Mesh
