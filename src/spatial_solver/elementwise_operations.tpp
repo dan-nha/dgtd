@@ -1,10 +1,3 @@
-/* To turn on the .cpp syntax highlighting in vim insert the line
- *
- *    autocmd BufEnter *.tpp :setlocal filetype=cpp
- *
- * into your .vimrc file.
- */
-
 namespace DG_solver {
 
 template <class Basis>
