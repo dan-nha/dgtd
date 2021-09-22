@@ -1,4 +1,4 @@
-#include "../../../../src/spatial_solver/basis_functions/legendre_basis.h"
+#include "../../../src/spatial_solver/basis_functions/legendre_basis.h"
 
 #include <armadillo>
 #include <boost/test/unit_test.hpp>

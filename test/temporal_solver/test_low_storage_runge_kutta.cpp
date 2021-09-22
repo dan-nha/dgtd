@@ -1,6 +1,6 @@
 #define BOOST_TEST_MODULE test_temporal_solver
 
-#include "../../../src/temporal_solver/low_storage_runge_kutta.h"
+#include "../../src/temporal_solver/low_storage_runge_kutta.h"
 #include <boost/test/unit_test.hpp>
 
 namespace utf = boost::unit_test;

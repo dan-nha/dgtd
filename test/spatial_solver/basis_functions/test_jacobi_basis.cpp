@@ -1,4 +1,4 @@
-#include "../../../../src/spatial_solver/basis_functions/jacobi_basis.h"
+#include "../../../src/spatial_solver/basis_functions/jacobi_basis.h"
 
 #include <boost/test/unit_test.hpp>
 #include <cmath>

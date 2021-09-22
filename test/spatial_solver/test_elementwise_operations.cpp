@@ -1,8 +1,8 @@
-#include "../../../../src/spatial_solver/basis_functions/legendre_basis.h"
-#include "../../../../src/spatial_solver/elementwise_operations.h"
+#include "../../src/spatial_solver/basis_functions/legendre_basis.h"
+#include "../../src/spatial_solver/elementwise_operations.h"
 
-#include <armadillo>
 #include <boost/test/unit_test.hpp>
+#include <armadillo>
 #include <cmath>
 
 namespace utf = boost::unit_test;
