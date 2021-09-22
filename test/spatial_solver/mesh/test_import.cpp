@@ -10,24 +10,24 @@ BOOST_AUTO_TEST_CASE(get_line_entries) {
 
   std::string eminem("Hi! My name is Slim Shady.");
 
-  BOOST_REQUIRE(get_entry<std::string>(eminem) == "Hi!");
-  BOOST_REQUIRE(get_entry<std::string>(eminem, 5) == "Slim");
+  BOOST_TEST(get_entry<std::string>(eminem) == "Hi!");
+  BOOST_TEST(get_entry<std::string>(eminem, 5) == "Slim");
 
   std::vector<std::string> partial_line(
       get_multiple_entries<std::string>(eminem, 4));
-  BOOST_REQUIRE(partial_line[0] == "Hi!");
-  BOOST_REQUIRE(partial_line[1] == "My");
-  BOOST_REQUIRE(partial_line[2] == "name");
-  BOOST_REQUIRE(partial_line[3] == "is");
+  BOOST_TEST(partial_line[0] == "Hi!");
+  BOOST_TEST(partial_line[1] == "My");
+  BOOST_TEST(partial_line[2] == "name");
+  BOOST_TEST(partial_line[3] == "is");
 
   std::vector<std::string> total_line(
       get_all_entries<std::string>(eminem));
-  BOOST_REQUIRE(total_line[0] == "Hi!");
-  BOOST_REQUIRE(total_line[1] == "My");
-  BOOST_REQUIRE(total_line[2] == "name");
-  BOOST_REQUIRE(total_line[3] == "is");
-  BOOST_REQUIRE(total_line[4] == "Slim");
-  BOOST_REQUIRE(total_line[5] == "Shady.");
+  BOOST_TEST(total_line[0] == "Hi!");
+  BOOST_TEST(total_line[1] == "My");
+  BOOST_TEST(total_line[2] == "name");
+  BOOST_TEST(total_line[3] == "is");
+  BOOST_TEST(total_line[4] == "Slim");
+  BOOST_TEST(total_line[5] == "Shady.");
 }
 
 BOOST_AUTO_TEST_CASE(get_line_entries_from_file) {
@@ -38,19 +38,19 @@ BOOST_AUTO_TEST_CASE(get_line_entries_from_file) {
   std::string filename(root_dir + file_dir + "test.txt");
   std::ifstream file(filename.c_str());
   
-  BOOST_REQUIRE(get_next_line_entry<std::string>(file) == "Hi!");
+  BOOST_TEST(get_next_line_entry<std::string>(file) == "Hi!");
  
   std::vector<std::string> lyrics(
       get_next_line_entries<std::string>(file));
-  BOOST_REQUIRE(lyrics[2] == "is");
+  BOOST_TEST(lyrics[2] == "is");
 
   skip_lines(file, 2);
-  BOOST_REQUIRE(
+  BOOST_TEST(
       get_next_line_entries<std::string>(file).back() == "(huh?)");
 
   size_t line_number(5);
   skip_lines(file, 3, line_number);
-  BOOST_REQUIRE(
+  BOOST_TEST(
       get_next_line_entries<std::string>(file).back() == "(what?)");
-  BOOST_REQUIRE(line_number == 8);
+  BOOST_TEST(line_number == 8);
 }

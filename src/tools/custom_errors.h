@@ -9,7 +9,7 @@ class Mesh_error: public std::exception {
 
   public:
   Mesh_error( const std::string& custom_error_msg, const std::string& filename)
-  : error_message("[" + filename + "]\n" + custom_error_msg) 
+  : error_message("[" + filename + "] " + custom_error_msg) 
   {};
 
   /**

@@ -18,7 +18,7 @@ Low_storage_runge_kutta lsrk_solver;
 BOOST_AUTO_TEST_CASE(get_butcher_coeffs, *utf::tolerance(1e-16)) {
 
   auto [a, b, c] = lsrk_solver.get_butcher_coeffs(4, 5);
-  BOOST_REQUIRE(a[0] == 0.);
+  BOOST_TEST(a[0] == 0.);
   BOOST_TEST(a[1] == -0.417890474499852, tt::tolerance(1e-15));
   BOOST_TEST(a[2] == -1.192151694642677, tt::tolerance(1e-15));
   BOOST_TEST(a[3] == -1.697784692471528, tt::tolerance(1e-15));
@@ -30,7 +30,7 @@ BOOST_AUTO_TEST_CASE(get_butcher_coeffs, *utf::tolerance(1e-16)) {
   BOOST_TEST(b[3] == 0.699450455949122, tt::tolerance(1e-15));
   BOOST_TEST(b[4] == 0.153057247968152, tt::tolerance(1e-15));
 
-  BOOST_REQUIRE(c[0] == 0.);
+  BOOST_TEST(c[0] == 0.);
   BOOST_TEST(c[1] == 0.149659021999229, tt::tolerance(1e-15));
   BOOST_TEST(c[2] == 0.370400957364205, tt::tolerance(1e-15));
   BOOST_TEST(c[3] == 0.622255763134443, tt::tolerance(1e-15));
