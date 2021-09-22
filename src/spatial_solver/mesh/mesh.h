@@ -7,7 +7,7 @@
 #include <string>
 #include <type_traits>
 
-namespace Spatial_solver::Mesh {
+namespace DG_solver::Mesh {
 
 /// Struct for different entities occuring in the mesh
 const struct Entity_type {
@@ -74,6 +74,6 @@ entity_physgroup_table(size_t dimension) {
 /// List of specifiers for each section in the mesh file
 const std::list<std::string> specifier_list(
     {"$MeshFormat", "$PhysicalNames", "$Entities", "$Nodes", "$Elements"});
-} // namespace Spatial_solver::Mesh
+} // namespace DG_solver::Mesh
 
 #endif
