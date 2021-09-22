@@ -1,5 +1,6 @@
 #include "jacobi_basis.h"
 
+#include <boost/log/trivial.hpp>
 #include <cmath>
 
 namespace DG_solver {
@@ -9,8 +10,10 @@ arma::vec Jacobi_basis::get_gauss_lobatto_nodes(
     const double beta,
     const size_t polynomial_order) const {
 
-  if (polynomial_order <= 1) {
+  if (polynomial_order < 1) {
     throw std::invalid_argument(
+        std::string{} + __FILE__ + ":" + std::to_string(__LINE__) +
+        ": "
         "To calculate the Gauss-Lobatto quadrature nodes the polynomial "
         "order must be >= 1.");
   } else {
@@ -31,14 +34,23 @@ double Jacobi_basis::get_jacobi_polynomial(
     const size_t polynomial_order,
     const double position) const {
   if (alpha <= -1.0) {
-    throw std::invalid_argument("Parameter alpha must greater than -1.");
+    throw std::invalid_argument(
+        std::string{} + __FILE__ + ":" + std::to_string(__LINE__) +
+        ": "
+        "Parameter alpha must greater than -1.");
   }
   if (beta <= -1.0) {
-    throw std::invalid_argument("Parameter beta must be greater than -1.");
+    throw std::invalid_argument(
+        std::string{} + __FILE__ + ":" + std::to_string(__LINE__) +
+        ": "
+        "Parameter beta must be greater than -1.");
   }
   if ((alpha + beta) == -1.0) {
-    throw std::invalid_argument("To calculate the Jacobi polynomials the "
-                                "sum alpha+beta must not be -1.");
+    throw std::invalid_argument(
+        std::string{} + __FILE__ + ":" + std::to_string(__LINE__) +
+        ": "
+        "To calculate the Jacobi polynomials the "
+        "sum alpha+beta must not be -1.");
   };
 
   arma::vec jacobi_poly(polynomial_order + 1);
@@ -88,6 +100,8 @@ arma::vec Jacobi_basis::get_gauss_jacobi_nodes(
 
   if (gj_nodes.size() != polynomial_order + 1) {
     throw std::invalid_argument(
+        std::string{} + __FILE__ + ":" + std::to_string(__LINE__) +
+        ": "
         "The number of Gauss Jacobi quadrature nodes must be equal to "
         "polynomial_order+1.");
   };
@@ -100,13 +114,21 @@ arma::mat Jacobi_basis::get_jacobi_polynomial_matrix(
     const size_t polynomial_order) const {
 
   if (alpha <= -1.0) {
-    throw std::invalid_argument("Parameter alpha must be >= 0.");
+    throw std::invalid_argument(
+        std::string{} + __FILE__ + ":" + std::to_string(__LINE__) +
+        ": "
+        "Parameter alpha must be >= 0.");
   }
   if (beta <= -1.0) {
-    throw std::invalid_argument("Parameter beta must be >= 0.");
+    throw std::invalid_argument(
+        std::string{} + __FILE__ + ":" + std::to_string(__LINE__) +
+        ": "
+        "Parameter beta must be >= 0.");
   }
   if (polynomial_order < 0) {
     throw std::invalid_argument(
+        std::string{} + __FILE__ + ":" + std::to_string(__LINE__) +
+        ": "
         "Polynomial order must be a positive integer.");
   }
 
@@ -194,7 +216,7 @@ std::vector<double> Jacobi_basis::get_recurrence_initiation(
 }
 //----
 void Jacobi_basis::apply_reccurence(
-    arma::vec& jacobi_polynomial,
+    arma::vec &jacobi_polynomial,
     const double alpha,
     const double beta,
     const size_t polynomial_order,

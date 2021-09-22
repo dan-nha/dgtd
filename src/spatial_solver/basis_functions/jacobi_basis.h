@@ -9,13 +9,13 @@ namespace DG_solver {
 /**
  * @brief Create quadrature nodes for the spatial solver.
  *
- * Within this class we create the quadrature nodes for the spatial solver.
- * We use the Gauss Jacobi quadrature rule to create those nodes. A robust
+ * Within this classI create the quadrature nodes for the spatial solver.
+ * I use the Gauss Jacobi quadrature rule to create those nodes. A robust
  * and efficient way of implementing the Gauss-Jacobi quadrature rule is by
  * using the Golub & Welsch algorithm \cite golub1969calculation. This
  * algorithm takes the recurrence relation of the Jacobi polynomials and
  * creates a matrix vector problem of this relation. The resulting matrix
- * is of tridiagonal form. The matrix elements we have implemented here can
+ * is of tridiagonal form. The matrix elements I have implemented here can
  * be found in \cite gil2007numerical [chapter 5.3, (5.109)]. One can show
  * that the eigenvalues of the tridiagonal matrix are identical to the
  * quadrature nodes. (The eigenvectors contain the quadrature weights.)
@@ -47,7 +47,7 @@ public:
   /**
    * @brief Compute the orthonormalized Jacobi polynomials
    *
-   * We use the recurrence relation for orthonormalized Jacobi polynomials
+   * I use the recurrence relation for orthonormalized Jacobi polynomials
    * as given in Hesthaven and Warburton \cite hesthaven2008nodal (Appendix
    * A). The Matlab reference code can be found under
    * /test/supplementary_material/hesthaven_warburton/JacobiP.m
@@ -59,7 +59,7 @@ public:
       const double position) const;
 
   /**
-   * @brief We calculate the gradient of the Jacobi polynomials by the
+   * @brief I calculate the gradient of the Jacobi polynomials by the
    * identity given in Hesthaven and Warburton \cite hesthaven2008nodal
    * (chap. 3.2). The Matlab reference code can be found under
    * /test/supplementary_material/hesthaven_warburton/GradJacobiP.m

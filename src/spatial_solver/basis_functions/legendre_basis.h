@@ -13,7 +13,7 @@ namespace DG_solver {
  * @brief Create Legendre polynomials, their gradients, and
  * quadrature nodes for the spatial solver.
  *
- * Within this class we create the Legendre polynomials, their gradients,
+ * Within this class I create the Legendre polynomials, their gradients,
  * and the corresponding Gaussian quadrature nodes from the Jacobi
  * polynomials and Gauss-Lobatto nodes, respectively.
  */

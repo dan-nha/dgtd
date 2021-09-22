@@ -32,7 +32,7 @@ public:
 
   /**
    * @brief Depending on the type of finite element, the number of
-   *quadrature nodes might vary. However, in 1D we always have a fixed
+   *quadrature nodes might vary. However, in 1D I always have a fixed
    *number of 1 as face quadrature node.
    **/
   inline size_t get_number_of_face_nodes() const { return 1; };
