@@ -27,7 +27,6 @@ public:
   /// @brief Import the number of mesh nodes (not quadrature nodes!)
   size_t import_number_of_nodes() const;
 
-protected:
   /** 
    * @brief Import Gmsh "$PhysicalNames" map: "physicalTag" (key) to
    * "dimension" (value)

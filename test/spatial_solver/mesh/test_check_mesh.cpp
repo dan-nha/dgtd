@@ -6,6 +6,15 @@
 
 namespace Mesh {
 
+/**
+ * In the following I check a given mesh for the existence of the most
+ * crucial parts of the mesh, which are needed for the DGTD code to run. 
+ * I will not check the content of the mesh itself, as I assume that the
+ * output of Gmsh is tested. Though minor bugs may occur, they most
+ * probably will not affect the DGTD code.
+ */
+BOOST_AUTO_TEST_SUITE(check_mesh);
+
 const std::string root_dir(DGTD_ROOT);
 const std::string
     mesh_dir("/test/spatial_solver/mesh/test_meshes/fail_meshes/");
@@ -22,76 +31,63 @@ BOOST_AUTO_TEST_CASE(check_extension) {
 }
 
 BOOST_AUTO_TEST_CASE(content_existence) {
-  error_msg =
-      "[" + root_dir + mesh_dir + "empty.msh] File seems to be empty.";
+  const std::string mesh(root_dir + mesh_dir + "empty.msh");
+  error_msg = "[" + mesh + "] File seems to be empty.";
   BOOST_CHECK_EXCEPTION(
-      Check_mesh(root_dir + mesh_dir + "empty.msh"),
-      Mesh_error,
-      expected_msg);
+      Check_mesh(std::string(mesh)), Mesh_error, expected_msg);
 }
 
 BOOST_AUTO_TEST_CASE(empty_lines) {
-  error_msg =
-      "[" + root_dir + mesh_dir +
-      "empty_lines.msh] Detected empty line in mesh file. (line 1)";
+  const std::string mesh(root_dir + mesh_dir + "empty_lines.msh");
+  error_msg = "[" + mesh + "] Detected empty line in mesh file. (line 1)";
   BOOST_CHECK_EXCEPTION(
-      Check_mesh(root_dir + mesh_dir + "empty_lines.msh"),
-      Mesh_error,
-      expected_msg);
+      Check_mesh(std::string(mesh)), Mesh_error, expected_msg);
 }
 
 BOOST_AUTO_TEST_CASE(meshformat_specifiers) {
-  error_msg =
-      "[" + root_dir + mesh_dir +
-      "missing_meshformat_begin_spec.msh] The following specifiers are "
-      "missing in the mesh file:\n$MeshFormat\n";
+  std::string mesh(
+      root_dir + mesh_dir + "missing_meshformat_begin_spec.msh");
+  error_msg = "[" + mesh +
+              "] The following specifiers are "
+              "missing in the mesh file:\n$MeshFormat\n";
   BOOST_CHECK_EXCEPTION(
-      Check_mesh(
-          root_dir + mesh_dir + "missing_meshformat_begin_spec.msh"),
-      Mesh_error,
-      expected_msg);
+      Check_mesh(std::string(mesh)), Mesh_error, expected_msg);
 
-  error_msg = "[" + root_dir + mesh_dir +
-              "missing_meshformat_end_spec.msh] The following specifiers "
+  mesh = root_dir + mesh_dir + "missing_meshformat_end_spec.msh";
+  error_msg = "[" + mesh +
+              "] The following specifiers "
               "are missing in the mesh file:\n$EndMeshFormat\n";
   BOOST_CHECK_EXCEPTION(
-      Check_mesh(root_dir + mesh_dir + "missing_meshformat_end_spec.msh"),
-      Mesh_error,
-      expected_msg);
+      Check_mesh(std::string(mesh)), Mesh_error, expected_msg);
 }
 
-BOOST_AUTO_TEST_CASE(meshformat_content) {
-  error_msg = "[" + root_dir + mesh_dir +
-              "missing_meshformat_content.msh] Missing content between "
+BOOST_AUTO_TEST_CASE(meshformat_content_existence) {
+  std::string mesh(root_dir + mesh_dir + "missing_meshformat_content.msh");
+  error_msg = "[" + mesh +
+              "] Missing content between "
               "$MeshFormat specifiers.";
   BOOST_CHECK_EXCEPTION(
-      Check_mesh(root_dir + mesh_dir + "missing_meshformat_content.msh"),
-      Mesh_error,
-      expected_msg);
+      Check_mesh(std::string(mesh)), Mesh_error, expected_msg);
 }
 
-BOOST_AUTO_TEST_CASE(physicalnames_content) {
-  error_msg = "[" + root_dir + mesh_dir +
-              "missing_physicalnames_content.msh] Missing content between "
-              "$PhysicalNames specifiers.";
-  BOOST_CHECK_EXCEPTION(
+BOOST_AUTO_TEST_CASE(physicalnames_content_existence) {
+  BOOST_CHECK_THROW(
       Check_mesh(
           root_dir + mesh_dir + "missing_physicalnames_content.msh"),
-      Mesh_error,
-      expected_msg);
+      Mesh_error);
 }
 
 BOOST_AUTO_TEST_CASE(multiple_specifiers) {
-  error_msg =
-      "[" + root_dir + mesh_dir +
-      "missing_multiple_specs.msh] The following specifiers are missing "
-      "in the mesh "
-      "file:\n$PhysicalNames\n$Entities\n$Nodes\n$Elements\n$"
-      "EndPhysicalNames\n$EndEntities\n$EndNodes\n$"
-      "EndElements\n";
+  std::string mesh(root_dir + mesh_dir + "missing_multiple_specs.msh");
+  error_msg = "[" + mesh +
+              "] The following specifiers are missing "
+              "in the mesh "
+              "file:\n$PhysicalNames\n$Entities\n$Nodes\n$Elements\n$"
+              "EndPhysicalNames\n$EndEntities\n$EndNodes\n$"
+              "EndElements\n";
   BOOST_CHECK_EXCEPTION(
-      Check_mesh(root_dir + mesh_dir + "missing_multiple_specs.msh"),
-      Mesh_error,
-      expected_msg);
+      Check_mesh(std::string(mesh)), Mesh_error, expected_msg);
 }
+
+BOOST_AUTO_TEST_SUITE_END();
 } // namespace Mesh

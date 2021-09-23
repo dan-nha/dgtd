@@ -36,12 +36,7 @@ size_t Import_mesh_data::get_dimension() const {
               ": "
               "Invalid dimension.",
           this->mesh_name);
-    } else if (
-        phys_group_dims.back() == 2 || phys_group_dims.back() == 3) {
-        throw Not_implemented(
-          std::string{} + __FILE__ + ":" + std::to_string(__LINE__) + ": "
-          "At the moment only one-dimensional meshes are supported.");
-    }
+    } 
   }
 
   return *std::max_element(phys_group_dims.begin(), phys_group_dims.end());

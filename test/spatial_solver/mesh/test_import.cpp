@@ -37,20 +37,18 @@ BOOST_AUTO_TEST_CASE(get_line_entries_from_file) {
   const std::string file_dir("/test/spatial_solver/mesh/");
   std::string filename(root_dir + file_dir + "test.txt");
   std::ifstream file(filename.c_str());
-  
+
   BOOST_TEST(get_next_line_entry<std::string>(file) == "Hi!");
- 
+
   std::vector<std::string> lyrics(
       get_next_line_entries<std::string>(file));
   BOOST_TEST(lyrics[2] == "is");
 
   skip_lines(file, 2);
-  BOOST_TEST(
-      get_next_line_entries<std::string>(file).back() == "(huh?)");
+  BOOST_TEST(get_next_line_entries<std::string>(file).back() == "(huh?)");
 
   size_t line_number(5);
   skip_lines(file, 3, line_number);
-  BOOST_TEST(
-      get_next_line_entries<std::string>(file).back() == "(what?)");
+  BOOST_TEST(get_next_line_entries<std::string>(file).back() == "(what?)");
   BOOST_TEST(line_number == 8);
 }
