@@ -1,8 +1,6 @@
 #ifndef IMPORT_H
 #define IMPORT_H
 
-#include "mesh.h"
-
 #include <cstddef>
 #include <cstdlib>
 #include <fstream>

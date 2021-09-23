@@ -1,6 +1,6 @@
 #include "check_mesh.h"
+#include "../../tools/import.h"
 #include "../../tools/custom_errors.h"
-#include "import.h"
 
 #include <boost/filesystem/convenience.hpp>
 #include <boost/filesystem/path.hpp>

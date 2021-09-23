@@ -195,7 +195,7 @@ BOOST_AUTO_TEST_CASE(import_gmsh_nodes_3d) {
       139.0555123899853); // x cooridnate
 }
 
-BOOST_AUTO_TEST_CASE(gmsh_element_node_tags) {
+BOOST_AUTO_TEST_CASE(gmsh_element_nodes) {
   BOOST_TEST(cylinder.import_gmsh_elements(Entity.curve, 1)[3][0] == 23);
   BOOST_TEST(cylinder.import_gmsh_elements(Entity.curve, 1)[3][1] == 24);
   BOOST_TEST(
@@ -204,7 +204,7 @@ BOOST_AUTO_TEST_CASE(gmsh_element_node_tags) {
   BOOST_TEST(cylinder.import_gmsh_element_type(Entity.surface, 1) == 2);
 }
 
-BOOST_AUTO_TEST_CASE(import_gmsh_element_node_tags) {
+BOOST_AUTO_TEST_CASE(import_gmsh_elements) {
   BOOST_TEST(sphere.import_gmsh_elements(Entity.surface, 1)[7][2] == 748);
   BOOST_TEST(
       sphere.import_gmsh_elements(Entity.volume, 27)[39876][3] == 5150);
