@@ -58,6 +58,12 @@ Process_mesh_data::get_ordered_elems(const std::vector<size_t> elem_tags) {
   return ordered_elem_tags;
 }
 //-------------------------------------------------------------------------
+double Process_mesh_data::get_elem_size(const size_t elem_tag) {
+
+  auto [left_coord, right_coord] = this->get_elem_coords(elem_tag);
+  return fabs(right_coord - left_coord);
+}
+//-------------------------------------------------------------------------
 std::tuple<double, double>
 Process_mesh_data::get_elem_coords(const size_t elem_tag) {
 
@@ -93,7 +99,7 @@ double Process_mesh_data::get_min_elem_size() {
 
   return *std::min_element(std::begin(elem_sizes), std::end(elem_sizes));
 }
-//-------------------------------------------------------------------------
+//----
 double
 Process_mesh_data::get_min_elem_size(const std::string &region_name) {
 
@@ -126,12 +132,6 @@ double Process_mesh_data::get_min_elem_size(const size_t region_tag) {
   }
 
   return *std::min_element(std::begin(elem_sizes), std::end(elem_sizes));
-}
-//-------------------------------------------------------------------------
-double Process_mesh_data::get_elem_size(const size_t elem_tag) {
-
-  auto [left_coord, right_coord] = this->get_elem_coords(elem_tag);
-  return fabs(right_coord - left_coord);
 }
 //-------------------------------------------------------------------------
 std::vector<size_t> Process_mesh_data::get_region_tags() {
