@@ -1,5 +1,5 @@
 ﻿## Description
-This code is a one-dimensional discontinuous Galerkin time-domain code -- a discontinuous finite element method in time domain -- modelled after Hesthaven and Warburton \cite hesthaven2008nodal. The code differs from the given Matlab code in the way that it offers an region based assignment of solution scheme parameters.
+This code is a one-dimensional discontinuous Galerkin time-domain code -- a discontinuous finite element method in time domain -- modelled after Hesthaven and Warburton \cite hesthaven2008nodal. The code differs from the given Matlab code in the way that it can be easily extended to a region based assignment of solution scheme parameters.
 
 The code is applied to a mesh of a given 1D structure. The mesh needs to be in the current mesh format given by [Gmsh](https://gmsh.info/).
 
