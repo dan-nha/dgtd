@@ -26,6 +26,15 @@ BOOST_AUTO_TEST_CASE(physical_groups) {
   BOOST_TEST(example.import_gmsh_physical_groups()[8] == 1);
 }
 
+BOOST_AUTO_TEST_CASE(physical_group_names) {
+  BOOST_TEST(example.import_gmsh_physical_names()["outer_bc"] == 1);
+  BOOST_TEST(example.import_gmsh_physical_names()["tfsf_pts"] == 2);
+  BOOST_TEST(example.import_gmsh_physical_names()["left_pml"] == 3);
+  BOOST_TEST(example.import_gmsh_physical_names()["dom1"] == 4);
+  BOOST_TEST(example.import_gmsh_physical_names()["dom2"] == 5);
+  BOOST_TEST(example.import_gmsh_physical_names()["right_pml"] == 8);
+}
+
 BOOST_AUTO_TEST_CASE(entities) {
   BOOST_TEST(example.import_gmsh_entities(Entity.point)[5][0] == 2);
   BOOST_TEST(

@@ -66,10 +66,43 @@ std::map<size_t, size_t> Import_mesh_data::import_gmsh_physical_groups() {
 
     std::string line;
     std::getline(mesh_file, line);
-    size_t phys_group_dim(Import::get_entry<size_t>(line));
-    size_t phys_group_tag(Import::get_entry<size_t>(line, 2));
-
+    const size_t phys_group_dim(Import::get_entry<size_t>(line));
+    const size_t phys_group_tag(Import::get_entry<size_t>(line, 2));
     physical_group_info[phys_group_tag] = phys_group_dim;
+  }
+
+  if (Import::get_next_line_entry<std::string>(mesh_file) !=
+      "$EndPhysicalNames") {
+    BOOST_LOG_TRIVIAL(warning)
+        << __FILE__ << ":" << __LINE__
+        << "Ignoring excess entries in '$PhysicalNames'." << std::endl;
+  }
+
+  return physical_group_info;
+}
+//-----------------------------------------------------------------------
+std::map<std::string, size_t>
+Import_mesh_data::import_gmsh_physical_names() {
+
+  std::ifstream mesh_file(this->mesh_name.c_str());
+  this->goto_mesh_section("$PhysicalNames", mesh_file);
+
+  const size_t phys_group_number(
+      Import::get_next_line_entry<size_t>(mesh_file));
+
+  std::map<std::string, size_t> physical_group_info;
+  for (size_t phys_group_counter = 0;
+       phys_group_counter < phys_group_number;
+       ++phys_group_counter) {
+
+    std::string line;
+    std::getline(mesh_file, line);
+    const size_t phys_group_tag(Import::get_entry<size_t>(line, 2));
+    std::string phys_group_name(Import::get_entry<std::string>(line, 3));
+    phys_group_name.erase(
+        std::remove(phys_group_name.begin(), phys_group_name.end(), '\"'),
+        phys_group_name.end());
+    physical_group_info[phys_group_name] = phys_group_tag;
   }
 
   if (Import::get_next_line_entry<std::string>(mesh_file) !=
@@ -233,8 +266,7 @@ Import_mesh_data::import_gmsh_elements(
         Import::get_next_line_entries<size_t>(mesh_file));
 
     if (line_entries.size() == 4 && line_entries[0] <= Entity.volume &&
-        line_entries[2] <= Element.point
-    ) {
+        line_entries[2] <= Element.point) {
 
       if (line_entries[0] == entity_type &&
           line_entries[1] == entity_tag) {

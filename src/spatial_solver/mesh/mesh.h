@@ -92,8 +92,7 @@ const struct Element_type {
 static std::map<size_t, size_t> dimension_to_finite_elem_type{
     {1, Element.line_2nodes},
     {2, Element.triangle_3nodes},
-    {3, Element.tetrahedron_4nodes}
-};
+    {3, Element.tetrahedron_4nodes}};
 } // namespace DG_solver::Mesh
 
 #endif

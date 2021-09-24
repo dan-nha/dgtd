@@ -8,7 +8,7 @@ namespace Mesh {
 
 /**
  * In the following I check a given mesh for the existence of the most
- * crucial parts of the mesh, which are needed for the DGTD code to run. 
+ * crucial parts of the mesh, which are needed for the DGTD code to run.
  * I will not check the content of the mesh itself, as I assume that the
  * output of Gmsh is tested. Though minor bugs may occur, they most
  * probably will not affect the DGTD code.

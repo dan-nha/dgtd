@@ -7,6 +7,28 @@ Process_mesh_data::Process_mesh_data(const std::string &_mesh_name)
       dimension(Import_mesh_data::get_dimension()) {}
 //-------------------------------------------------------------------------
 std::vector<size_t>
+Process_mesh_data::get_finite_elems(const std::string &region_name) {
+
+  auto phys_name_map(Import_mesh_data::import_gmsh_physical_names());
+  if (phys_name_map.find(region_name) != phys_name_map.end()) {
+    const size_t region_tag(phys_name_map[region_name]);
+    if (is_region(region_tag) == false) {
+      throw std::invalid_argument(
+          std::string() + "__FILE__" + ":" + std::to_string(__LINE__) +
+          ": "
+          "Invalid region name. Given name belongs to a contour.");
+    } else {
+      return this->get_finite_elems(region_tag);
+    }
+  } else {
+    throw std::invalid_argument(
+        std::string() + "__FILE__" + ":" + std::to_string(__LINE__) +
+        ": "
+        "Invalid region name.");
+  }
+}
+//----
+std::vector<size_t>
 Process_mesh_data::get_finite_elems(const size_t region_tag) {
 
   std::vector<size_t> element_tags;
@@ -20,18 +42,18 @@ Process_mesh_data::get_finite_elems(const size_t region_tag) {
   return element_tags;
 }
 //-------------------------------------------------------------------------
-std::vector<size_t> Process_mesh_data::get_ordered_elems(
-    const std::vector<size_t> elem_tags) {
-  
+std::vector<size_t>
+Process_mesh_data::get_ordered_elems(const std::vector<size_t> elem_tags) {
+
   std::vector<size_t> ordered_elem_tags;
   std::map<double, size_t> coord_elemtag_map;
-  for (const auto elem_tag: elem_tags ) {
+  for (const auto elem_tag : elem_tags) {
     auto [left_coord, right_coord] = this->get_elem_coords(elem_tag);
     coord_elemtag_map[left_coord] = elem_tag;
   };
 
-  for (const auto [coord, elem_tag]: coord_elemtag_map ) {
-    ordered_elem_tags.push_back( elem_tag );
+  for (const auto [coord, elem_tag] : coord_elemtag_map) {
+    ordered_elem_tags.push_back(elem_tag);
   }
   return ordered_elem_tags;
 }
@@ -63,21 +85,43 @@ Process_mesh_data::get_elem_coords(const size_t elem_tag) {
 }
 //-------------------------------------------------------------------------
 double Process_mesh_data::get_min_elem_size() {
-  
+
   std::vector<double> elem_sizes;
-  for (const auto region_tag: this->get_region_tags()) {
+  for (const auto region_tag : this->get_region_tags()) {
     elem_sizes.push_back(get_min_elem_size(region_tag));
   }
 
   return *std::min_element(std::begin(elem_sizes), std::end(elem_sizes));
 }
 //-------------------------------------------------------------------------
+double
+Process_mesh_data::get_min_elem_size(const std::string &region_name) {
+
+  auto phys_name_map(Import_mesh_data::import_gmsh_physical_names());
+  if (phys_name_map.find(region_name) != phys_name_map.end()) {
+    const size_t region_tag(phys_name_map[region_name]);
+    if (is_region(region_tag) == false) {
+      throw std::invalid_argument(
+          std::string() + "__FILE__" + ":" + std::to_string(__LINE__) +
+          ": "
+          "Invalid region name. Given name belongs to a contour.");
+    } else {
+      return this->get_min_elem_size(region_tag);
+    }
+  } else {
+    throw std::invalid_argument(
+        std::string() + "__FILE__" + ":" + std::to_string(__LINE__) +
+        ": "
+        "Invalid region name.");
+  }
+}
+//----
 double Process_mesh_data::get_min_elem_size(const size_t region_tag) {
 
   std::vector elem_tags(this->get_finite_elems(region_tag));
 
   std::vector<double> elem_sizes;
-  for (const auto elem_tag: elem_tags) {
+  for (const auto elem_tag : elem_tags) {
     elem_sizes.push_back(this->get_elem_size(elem_tag));
   }
 
@@ -87,7 +131,7 @@ double Process_mesh_data::get_min_elem_size(const size_t region_tag) {
 double Process_mesh_data::get_elem_size(const size_t elem_tag) {
 
   auto [left_coord, right_coord] = this->get_elem_coords(elem_tag);
-  return fabs(right_coord-left_coord);
+  return fabs(right_coord - left_coord);
 }
 //-------------------------------------------------------------------------
 std::vector<size_t> Process_mesh_data::get_region_tags() {
@@ -135,5 +179,30 @@ Process_mesh_data::get_entity_tags(const size_t region_tag) {
   return entity_tags;
 }
 //-------------------------------------------------------------------------
+bool Process_mesh_data::is_contour(const size_t physical_tag) {
+
+  const size_t entity(
+      Import_mesh_data::import_gmsh_physical_groups()[physical_tag]);
+
+  if (Mesh::entity_physgroup_table(this->dimension)[entity] ==
+      Physical_group.contour) {
+    return true;
+  } else {
+    return false;
+  }
+}
+//-------------------------------------------------------------------------
+bool Process_mesh_data::is_region(const size_t physical_tag) {
+
+  const size_t entity(
+      Import_mesh_data::import_gmsh_physical_groups()[physical_tag]);
+
+  if (Mesh::entity_physgroup_table(this->dimension)[entity] ==
+      Physical_group.region) {
+    return true;
+  } else {
+    return false;
+  }
+}
 
 } // namespace DG_solver::Mesh

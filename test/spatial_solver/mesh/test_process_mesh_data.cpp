@@ -20,6 +20,20 @@ BOOST_AUTO_TEST_CASE(finite_elems) {
   for (size_t i(0); i < 11; ++i) {
     BOOST_TEST(finite_elems[i] == i + 3);
   }
+
+  std::vector finite_elems_by_name(
+      line.get_finite_elems("the_only_region"));
+  BOOST_CHECK_EQUAL_COLLECTIONS(
+      finite_elems_by_name.begin(),
+      finite_elems_by_name.end(),
+      finite_elems.begin(),
+      finite_elems.end());
+
+  BOOST_CHECK_THROW(
+      line.get_finite_elems("invalid_region"), std::invalid_argument);
+
+  BOOST_CHECK_THROW(
+      line.get_finite_elems("outer_bc"), std::invalid_argument);
 }
 
 BOOST_AUTO_TEST_CASE(finite_elem_coords) {
@@ -57,7 +71,20 @@ BOOST_AUTO_TEST_CASE(min_elem_size) {
 
 BOOST_AUTO_TEST_CASE(regional_min_elem_size) {
   BOOST_TEST(line.get_min_elem_size(2) == 0.4903203509669787);
+  BOOST_TEST(
+      line.get_min_elem_size("the_only_region") ==
+      line.get_min_elem_size(2));
+
   BOOST_TEST(example.get_min_elem_size(3) == 1.0046848956386096);
+  BOOST_TEST(
+      example.get_min_elem_size("left_pml") ==
+      example.get_min_elem_size(3));
+
+  BOOST_CHECK_THROW(
+      line.get_min_elem_size("invalid_region"), std::invalid_argument);
+
+  BOOST_CHECK_THROW(
+      line.get_min_elem_size("outer_bc"), std::invalid_argument);
 }
 
 BOOST_AUTO_TEST_CASE(finite_elem_size) {

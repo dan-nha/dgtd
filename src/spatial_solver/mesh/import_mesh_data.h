@@ -39,6 +39,12 @@ public:
   std::map<size_t, size_t> import_gmsh_physical_groups();
 
   /**
+   * @brief Import Gmsh "$PhysicalNames" map: "name" (key) to
+   * "physicalTag" (value)
+   */
+  std::map<std::string, size_t> import_gmsh_physical_names();
+
+  /**
    * @brief For a given entity (point, curve, surface, volume) a map of the
    * entity tags within each entity type and the physical tags associated
    * with each entity tag is generated
@@ -77,7 +83,6 @@ public:
    */
   std::map<size_t, std::vector<size_t>>
   import_gmsh_elements(const size_t entity_type, const size_t entity_tag);
-
 
 private:
   /**
