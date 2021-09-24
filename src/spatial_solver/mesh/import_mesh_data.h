@@ -9,7 +9,12 @@
 #include <vector>
 
 namespace DG_solver::Mesh {
-
+/**
+ * @brief Class to import the mesh data from Gmsh files. The Gmsh sections
+ * of interest, i.e. Meshformat, PhysicalNames, Entities, Nodes, and
+ * Elements, are imported as maps as this is the data format, which
+ * resembles the Gmsh file structure the closest.
+ */
 class Import_mesh_data {
 
 public:
@@ -27,7 +32,7 @@ public:
   /// @brief Import the number of mesh nodes (not quadrature nodes!)
   size_t import_number_of_nodes() const;
 
-  /** 
+  /**
    * @brief Import Gmsh "$PhysicalNames" map: "physicalTag" (key) to
    * "dimension" (value)
    */
@@ -39,28 +44,21 @@ public:
    * with each entity tag is generated
    *
    * @param[in] entity_type The type of entity, i.e. Entity.point,
-   * Entity.curve, Entity.surface, or Entity.volume according to gmsh
+   * Entity.curve, Entity.surface, or Entity.volume according to Gmsh
    *
-   * @return Map of gmsh "entityTag" (key) to a vector of "physicalTags"
+   * @return Map of Gmsh "entityTag" (key) to a vector of "physicalTags"
    * (value)
    */
   std::map<size_t, std::vector<size_t>>
   import_gmsh_entities(const size_t entity_type);
 
   /**
-   * @brief Import the mesh nodes for a given entity, not to be confused
-   * with the quadrature nodes in DGTD. The entity is characterized by its
-   * type and tag number.
-   *
-   * @param[in] entity_type The type of entity, i.e. Entity.point,
-   * Entity.curve, Entity.surface, or Entity.volume according to gmsh
-   * @param[in] entity_tag The gmsh entity tag, i.e. the number
-   * characterizing the entity
-   *
-   * @return Map of gmsh "nodeTag" (key) to the node's coordinates (value).
+   * @brief Import the mesh nodes, not to be confused with the quadrature
+   * nodes in DGTD.
+   * *
+   * @return Map of Gmsh "nodeTag" (key) to the node's coordinates (value).
    */
-  std::map<size_t, arma::vec>
-  import_gmsh_nodes(const size_t entity_type, const size_t entity_tag);
+  std::map<size_t, std::vector<double>> import_gmsh_nodes();
 
   /**
    * @brief Import gmsh elements for a certain entity type and tag. Note,
@@ -75,28 +73,11 @@ public:
    * the entity
    *
    * @return Map of gmsh "elementTag" (key) to the associated "nodeTags"
-   * (value), i.e. the tags of those nodes which form the element
+   * (value), i.e. the tags of those nodes which constitute the element
    */
   std::map<size_t, std::vector<size_t>>
   import_gmsh_elements(const size_t entity_type, const size_t entity_tag);
 
-  /**
-   * @brief Import gmsh element type for a certain entity type and tag.
-   * Note, that gmsh elements are not elements in the sense of elements in
-   * finite elements but rather a collection of points and curves in 1D,
-   * curves and sufaces in 2D, or surfaces and volumes in 3D which form a
-   * certain entity.
-   *
-   * @param[in] entity_type The type of entity, i.e. Entity.point,
-   * Entity.curve, Entity.surface, or Entity.volume
-   * @param[in] entity_tag The entity tag, i.e. the number characterizing
-   * the entity
-   *
-   * @return Element type as integer
-   */
-  size_t import_gmsh_element_type(
-      const size_t entity_type,
-      const size_t entity_tag);
 
 private:
   /**

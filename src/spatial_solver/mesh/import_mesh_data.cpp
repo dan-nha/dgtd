@@ -1,7 +1,7 @@
-#include "mesh_geometry.h"
 #include "import_mesh_data.h"
-#include "../../tools/import.h"
 #include "../../tools/custom_errors.h"
+#include "../../tools/import.h"
+#include "mesh.h"
 
 #include <boost/lexical_cast.hpp>
 #include <boost/log/trivial.hpp>
@@ -36,7 +36,7 @@ size_t Import_mesh_data::get_dimension() const {
               ": "
               "Invalid dimension.",
           this->mesh_name);
-    } 
+    }
   }
 
   return *std::max_element(phys_group_dims.begin(), phys_group_dims.end());
@@ -156,17 +156,16 @@ Import_mesh_data::import_gmsh_entities(const size_t entity_type) {
 
   return entity_info;
 }
-//-----------------------------------------------------------------------
-std::map<size_t, arma::vec> Import_mesh_data::import_gmsh_nodes(
-    const size_t entity_type,
-    const size_t entity_tag) {
+//-------------------------------------------------------------------------
+std::map<size_t, std::vector<double>>
+Import_mesh_data::import_gmsh_nodes() {
 
   std::ifstream mesh_file(this->mesh_name.c_str());
   this->goto_mesh_section("$Nodes", mesh_file);
 
   size_t num_entity_blocks(Import::get_next_line_entry<size_t>(mesh_file));
 
-  std::map<size_t, arma::vec> node_map;
+  std::map<size_t, std::vector<double>> node_map;
   for (size_t entity_block(1); entity_block <= num_entity_blocks;
        ++entity_block) {
 
@@ -191,48 +190,26 @@ std::map<size_t, arma::vec> Import_mesh_data::import_gmsh_nodes(
                 "supported in miniDGTD. Regenerate mesh.",
             this->mesh_name);
       }
-    }
-
-    if (block_entity_dim == entity_type &&
-        block_entity_tag == entity_tag) {
-
-      if (block_num_nodes != 0) {
-        // Get the gmsh "nodeTags"
-        std::vector<size_t> node_tags;
-        for (size_t node(0); node < block_num_nodes; ++node) {
-          // BUG in gmsh:
-          // Reading in double instead of size_t and then perform a static
-          // cast to size_t due to bug in 2D and 3D mesh file produced by
-          // gmsh
-          node_tags.push_back(static_cast<size_t>(
-              Import::get_next_line_entry<double>(mesh_file)));
-        }
-
-        // Get the node coordinates
-        for (const size_t &node_tag : node_tags) {
-          arma::vec coords(
-              Import::get_next_line_entries<double>(mesh_file));
-          node_map[node_tag] = coords;
-        }
-
-      } else {
-        std::string error_message(
-            std::string{} + __FILE__ + ":" + std::to_string(__LINE__) +
-            ": No nodes for entity type " + std::to_string(entity_type) +
-            " and entity tag " + std::to_string(entity_tag) + ".");
-        throw Mesh_error(error_message, this->mesh_name);
+      std::vector<size_t> node_tags;
+      for (size_t node(0); node < block_num_nodes; ++node) {
+        // BUG in gmsh: Reading in double instead of size_t and then
+        // perform a static cast to size_t due to bug in 2D and 3D mesh
+        // file produced by gmsh
+        node_tags.push_back(static_cast<size_t>(
+            Import::get_next_line_entry<double>(mesh_file)));
       }
-    } else {
-      Import::skip_lines(mesh_file, 2 * block_num_nodes);
+
+      // Get the node coordinates
+      for (const size_t &node_tag : node_tags) {
+        std::vector<double> coords(
+            Import::get_next_line_entries<double>(mesh_file));
+        node_map[node_tag] = coords;
+      }
     }
   }
 
   if (node_map.empty()) {
-    throw Mesh_error(
-        std::string{} + __FILE__ + ":" + std::to_string(__LINE__) +
-        ": Unknown entity type " + std::to_string(entity_type) +
-        " or tag " + std::to_string(entity_tag) + ".",
-        this->mesh_name);
+    throw Mesh_error("No nodes found.", this->mesh_name);
   }
 
   return node_map;
@@ -256,9 +233,7 @@ Import_mesh_data::import_gmsh_elements(
         Import::get_next_line_entries<size_t>(mesh_file));
 
     if (line_entries.size() == 4 && line_entries[0] <= Entity.volume &&
-        line_entries[2] <=
-            Element.point // Might need adjustment, if new element types
-                          // are introduced in mesh.h
+        line_entries[2] <= Element.point
     ) {
 
       if (line_entries[0] == entity_type &&
@@ -283,45 +258,6 @@ Import_mesh_data::import_gmsh_elements(
   }
 
   return element_info;
-}
-//-----------------------------------------------------------------------
-size_t Import_mesh_data::import_gmsh_element_type(
-    const size_t entity_type,
-    const size_t entity_tag) {
-  std::ifstream mesh_file(this->mesh_name.c_str());
-  this->goto_mesh_section("$Elements", mesh_file);
-
-  size_t element_type;
-
-  size_t num_entity_blocks(Import::get_next_line_entry<double>(mesh_file));
-
-  for (size_t entity_block(0); entity_block < num_entity_blocks;
-       ++entity_block) {
-    std::vector<size_t> line_entries(
-        Import::get_next_line_entries<size_t>(mesh_file));
-
-    if (line_entries.size() == 4 && line_entries[0] == entity_type &&
-        line_entries[1] == entity_tag &&
-        (line_entries[2] == Element.line_2nodes ||
-         line_entries[2] == Element.line_3nodes_2nd_order ||
-         line_entries[2] == Element.triangle_3nodes ||
-         line_entries[2] == Element.triangle_6nodes_2nd_order ||
-         line_entries[2] == Element.tetrahedron_4nodes ||
-         line_entries[2] == Element.tetrahedron_10nodes_2nd_order)) {
-      element_type = line_entries[2];
-      break;
-    } else {
-      Import::skip_lines(mesh_file, line_entries[3]);
-    }
-  }
-  if (element_type == INT_MAX) {
-    throw Mesh_error(
-        std::string{} + __FILE__ + ":" + std::to_string(__LINE__) +
-            "Gmsh element not found.",
-        this->mesh_name);
-  }
-
-  return element_type;
 }
 //-----------------------------------------------------------------------
 std::vector<Import_mesh_data::mesh_section_info>

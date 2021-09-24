@@ -1,6 +1,6 @@
 #include "check_mesh.h"
-#include "../../tools/import.h"
 #include "../../tools/custom_errors.h"
+#include "../../tools/import.h"
 
 #include <boost/filesystem/convenience.hpp>
 #include <boost/filesystem/path.hpp>
@@ -8,20 +8,18 @@
 
 namespace Mesh {
 Check_mesh::Check_mesh(const std::string &filename)
-    : mesh_name(filename),
-    begin_specifier({
-      {"$MeshFormat", false},
-      {"$PhysicalNames", false},
-      {"$Entities", false},
-      {"$Nodes", false},
-      {"$Elements", false}}),
-    end_specifier({
-      {"$EndMeshFormat", false},
-      {"$EndPhysicalNames", false},
-      {"$EndEntities", false},
-      {"$EndNodes", false},
-      {"$EndElements", false}})
-{
+    : mesh_name(filename), begin_specifier(
+                               {{"$MeshFormat", false},
+                                {"$PhysicalNames", false},
+                                {"$Entities", false},
+                                {"$Nodes", false},
+                                {"$Elements", false}}),
+      end_specifier(
+          {{"$EndMeshFormat", false},
+           {"$EndPhysicalNames", false},
+           {"$EndEntities", false},
+           {"$EndNodes", false},
+           {"$EndElements", false}}) {
   this->check_mesh_existence();
   this->check_empty_lines();
   this->check_specifiers();
@@ -69,7 +67,7 @@ void Check_mesh::check_empty_lines() {
 void Check_mesh::check_specifiers() {
 
   std::ifstream mesh_file(this->mesh_name.c_str());
- 
+
   // Look for begin and end specifiers in mesh file
   // ----------------------------------------------
   size_t line_number(1);
@@ -158,7 +156,7 @@ std::string Check_mesh::get_unfound_specifiers() const {
     if (!unfound.second)
       unfound_specifiers.append(unfound.first + '\n');
   }
-  
+
   return unfound_specifiers;
 }
 } // namespace Mesh
