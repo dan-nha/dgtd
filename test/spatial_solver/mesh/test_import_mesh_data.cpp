@@ -17,13 +17,16 @@ Import_mesh_data line(root_dir + mesh_dir + "line.msh");
 
 BOOST_AUTO_TEST_CASE(dimension) { BOOST_TEST(line.get_dimension() == 1); }
 
-BOOST_AUTO_TEST_CASE(physical_groups) {
-  BOOST_TEST(example.import_gmsh_physical_groups()[1] == 0);
-  BOOST_TEST(example.import_gmsh_physical_groups()[2] == 0);
-  BOOST_TEST(example.import_gmsh_physical_groups()[3] == 1);
-  BOOST_TEST(example.import_gmsh_physical_groups()[4] == 1);
-  BOOST_TEST(example.import_gmsh_physical_groups()[5] == 1);
-  BOOST_TEST(example.import_gmsh_physical_groups()[8] == 1);
+BOOST_AUTO_TEST_CASE(contours) {
+  BOOST_TEST(example.import_gmsh_contours()[0] == 1);
+  BOOST_TEST(example.import_gmsh_contours()[1] == 2);
+}
+
+BOOST_AUTO_TEST_CASE(regions) {
+  BOOST_TEST(example.import_gmsh_regions()[0] == 3);
+  BOOST_TEST(example.import_gmsh_regions()[1] == 4);
+  BOOST_TEST(example.import_gmsh_regions()[2] == 5);
+  BOOST_TEST(example.import_gmsh_regions()[3] == 8);
 }
 
 BOOST_AUTO_TEST_CASE(physical_group_names) {
@@ -96,27 +99,19 @@ BOOST_AUTO_TEST_CASE(wrong_dimension) {
 }
 
 BOOST_AUTO_TEST_CASE(physical_groups_2d) {
-  BOOST_TEST(cylinder.import_gmsh_physical_groups()[1] == 1);
-  BOOST_TEST(cylinder.import_gmsh_physical_groups()[2] == 1);
-  BOOST_TEST(cylinder.import_gmsh_physical_groups()[3] == 1);
-  BOOST_TEST(cylinder.import_gmsh_physical_groups()[4] == 1);
-  BOOST_TEST(cylinder.import_gmsh_physical_groups()[5] == 2);
-  BOOST_TEST(cylinder.import_gmsh_physical_groups()[6] == 2);
-  BOOST_TEST(cylinder.import_gmsh_physical_groups()[7] == 2);
-  BOOST_TEST(cylinder.import_gmsh_physical_groups()[8] == 2);
-  BOOST_TEST(cylinder.import_gmsh_physical_groups()[9] == 2);
+  for (size_t i(0); i<4; ++i) {
+    BOOST_TEST(cylinder.import_gmsh_contours()[i] == i+1);}
+
+  for (size_t i(0); i<5; ++i) {
+    BOOST_TEST(cylinder.import_gmsh_regions()[i] == i+5);}
 }
 
 BOOST_AUTO_TEST_CASE(physical_groups_3d) {
-  BOOST_TEST(sphere.import_gmsh_physical_groups()[1] == 2);
-  BOOST_TEST(sphere.import_gmsh_physical_groups()[4] == 2);
-  BOOST_TEST(sphere.import_gmsh_physical_groups()[5] == 2);
-  BOOST_TEST(sphere.import_gmsh_physical_groups()[6] == 3);
-  BOOST_TEST(sphere.import_gmsh_physical_groups()[7] == 3);
-  BOOST_TEST(sphere.import_gmsh_physical_groups()[8] == 3);
-  BOOST_TEST(sphere.import_gmsh_physical_groups()[9] == 3);
-  BOOST_TEST(sphere.import_gmsh_physical_groups()[10] == 3);
-  BOOST_TEST(sphere.import_gmsh_physical_groups()[11] == 3);
+  BOOST_TEST(sphere.import_gmsh_contours()[0] == 1);
+  BOOST_TEST(sphere.import_gmsh_contours()[1] == 4);
+  BOOST_TEST(sphere.import_gmsh_contours()[2] == 5);
+  for (size_t i(0); i<6; ++i) {
+    BOOST_TEST(sphere.import_gmsh_regions()[i] == i+6);}
 }
 
 BOOST_AUTO_TEST_CASE(entities_2d) {

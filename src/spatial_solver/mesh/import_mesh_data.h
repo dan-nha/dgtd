@@ -32,11 +32,11 @@ public:
   /// @brief Import the number of mesh nodes (not quadrature nodes!)
   size_t import_number_of_nodes() const;
 
-  /**
-   * @brief Import Gmsh "$PhysicalNames" map: "physicalTag" (key) to
-   * "dimension" (value)
-   */
-  std::map<size_t, size_t> import_gmsh_physical_groups();
+  /// @brief Import Gmsh "physicalTags" of all regions
+  std::vector<size_t> import_gmsh_regions() const;
+
+  /// @brief Import Gmsh "physicalTags" of all contours
+  std::vector<size_t> import_gmsh_contours() const;
 
   /**
    * @brief Import Gmsh "$PhysicalNames" map: "name" (key) to

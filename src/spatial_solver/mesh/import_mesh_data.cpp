@@ -50,25 +50,26 @@ size_t Import_mesh_data::import_number_of_nodes() const {
   return Import::get_next_line_entry<size_t>(mesh_file, 2);
 }
 //-----------------------------------------------------------------------
-std::map<size_t, size_t> Import_mesh_data::import_gmsh_physical_groups() {
+std::vector<size_t> Import_mesh_data::import_gmsh_regions() const {
 
   std::ifstream mesh_file(this->mesh_name.c_str());
   this->goto_mesh_section("$PhysicalNames", mesh_file);
 
-  const size_t phys_group_number(
+  const size_t num_phys_groups(
       Import::get_next_line_entry<size_t>(mesh_file));
 
-  std::map<size_t, size_t> physical_group_info;
-
+  std::vector<size_t> regions;
   for (size_t phys_group_counter = 0;
-       phys_group_counter < phys_group_number;
+       phys_group_counter < num_phys_groups;
        ++phys_group_counter) {
 
     std::string line;
     std::getline(mesh_file, line);
-    const size_t phys_group_dim(Import::get_entry<size_t>(line));
-    const size_t phys_group_tag(Import::get_entry<size_t>(line, 2));
-    physical_group_info[phys_group_tag] = phys_group_dim;
+    const size_t region_entity( 
+        physgroup_entity_table(this->dimension)[Physical_group.region]);
+    if(Import::get_entry<size_t>(line) == region_entity) {
+      regions.push_back(Import::get_entry<size_t>(line, 2));
+    }
   }
 
   if (Import::get_next_line_entry<std::string>(mesh_file) !=
@@ -78,7 +79,39 @@ std::map<size_t, size_t> Import_mesh_data::import_gmsh_physical_groups() {
         << "Ignoring excess entries in '$PhysicalNames'." << std::endl;
   }
 
-  return physical_group_info;
+  return regions;
+}
+//-----------------------------------------------------------------------
+std::vector<size_t> Import_mesh_data::import_gmsh_contours() const {
+
+  std::ifstream mesh_file(this->mesh_name.c_str());
+  this->goto_mesh_section("$PhysicalNames", mesh_file);
+
+  const size_t num_phys_groups(
+      Import::get_next_line_entry<size_t>(mesh_file));
+
+  std::vector<size_t> contours;
+  for (size_t phys_group_counter = 0;
+       phys_group_counter < num_phys_groups;
+       ++phys_group_counter) {
+
+    std::string line;
+    std::getline(mesh_file, line);
+    const size_t contour_entity( 
+        physgroup_entity_table(this->dimension)[Physical_group.contour]);
+    if(Import::get_entry<size_t>(line) == contour_entity) {
+      contours.push_back(Import::get_entry<size_t>(line, 2));
+    }
+  }
+
+  if (Import::get_next_line_entry<std::string>(mesh_file) !=
+      "$EndPhysicalNames") {
+    BOOST_LOG_TRIVIAL(warning)
+        << __FILE__ << ":" << __LINE__
+        << "Ignoring excess entries in '$PhysicalNames'." << std::endl;
+  }
+
+  return contours;
 }
 //-----------------------------------------------------------------------
 std::map<std::string, size_t>

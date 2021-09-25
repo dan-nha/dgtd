@@ -28,18 +28,25 @@ public:
   std::vector<size_t> get_finite_elems(const size_t region_tag);
 
   /**
+   * @brief Order the regions from left to right. This is useful when
+   * operating different solution scheme parameters for different regions
+   * and assembling the global solution afterwards.
+   */
+  std::vector<size_t> get_ordered_regions();
+
+  /**
    * @brief Order a given set of finite elements from left to right. Use
    * this method, to always have the correct order of elements. For
    * example, you can apply this method to a collection of element tags of
-   * a certain region. In principle, you could also utilize this method to
-   * figure out which regions are neighboring ones.
+   * a certain region. This method is also utilized to figure out the
+   * neighboring regions, i.e. the region ordering from left to right.
    */
   std::vector<size_t>
   get_ordered_elems(const std::vector<size_t> elem_tags);
 
-  /** 
+  /**
    * @brief The element size is needed to convert physical coordinate
-   * information to reference coordinate information and vice versa.   
+   * information to reference coordinate information and vice versa.
    * */
   double get_elem_size(const size_t elem_tag);
 
@@ -62,19 +69,17 @@ public:
    * region using the CFL critiereon. One could use this method, to adapt
    * the time step to different regional mesh sizes.
    */
-  double get_min_elem_size(const std::string& region_name);
+  double get_min_elem_size(const std::string &region_name);
   double get_min_elem_size(const size_t region_tag);
-
 
 private:
   const std::string &mesh_name;
   const size_t dimension;
 
-  std::vector<size_t> get_region_tags();
   double get_coord(const size_t node_tag, const size_t entity_tag);
   std::vector<size_t> get_entity_tags(const size_t region_tag);
-  bool is_contour(const size_t physical_tag);
   bool is_region(const size_t physical_tag);
+  bool is_contour(const size_t physical_tag);
 };
 } // namespace DG::Mesh
 

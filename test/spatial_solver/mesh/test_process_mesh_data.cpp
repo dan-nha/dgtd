@@ -20,7 +20,7 @@ BOOST_AUTO_TEST_CASE(finite_elems) {
     BOOST_TEST(finite_elems[i] == i + 3);
   }
 
-  std::vector finite_elems_by_name(
+  const std::vector finite_elems_by_name(
       line.get_finite_elems("the_only_region"));
   BOOST_CHECK_EQUAL_COLLECTIONS(
       finite_elems_by_name.begin(),
@@ -37,22 +37,30 @@ BOOST_AUTO_TEST_CASE(finite_elems) {
 
 BOOST_AUTO_TEST_CASE(finite_elem_coords) {
   {
-    auto [left_coord, right_coord] = line.get_elem_coords(3);
+    const auto [left_coord, right_coord] = line.get_elem_coords(3);
     BOOST_TEST(left_coord == 0);
     BOOST_TEST(right_coord == 1.491565972698457);
   }
 
   {
-    auto [left_coord, right_coord] = line.get_elem_coords(5);
+    const auto [left_coord, right_coord] = line.get_elem_coords(5);
     BOOST_TEST(left_coord == 2.82608965819235);
     BOOST_TEST(right_coord == 4.020105179930608);
   }
 
   {
-    auto [left_coord, right_coord] = line.get_elem_coords(13);
+    const auto [left_coord, right_coord] = line.get_elem_coords(13);
     BOOST_TEST(left_coord == 9.509679649033021);
     BOOST_TEST(right_coord == 10);
   }
+}
+
+BOOST_AUTO_TEST_CASE(ordered_regions) {
+  std::vector ordered_regions(example.get_ordered_regions());
+  BOOST_TEST(ordered_regions[0] == 3);
+  BOOST_TEST(ordered_regions[1] == 4);
+  BOOST_TEST(ordered_regions[2] == 5);
+  BOOST_TEST(ordered_regions[3] == 8);
 }
 
 BOOST_AUTO_TEST_CASE(ordered_finite_elems) {
