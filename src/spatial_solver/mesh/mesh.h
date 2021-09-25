@@ -7,7 +7,7 @@
 #include <string>
 #include <type_traits>
 
-namespace DG_solver::Mesh {
+namespace DG::Mesh {
 
 /// Struct for different entities occuring in the mesh
 const struct Entity_type {
@@ -93,6 +93,7 @@ static std::map<size_t, size_t> dimension_to_finite_elem_type{
     {1, Element.line_2nodes},
     {2, Element.triangle_3nodes},
     {3, Element.tetrahedron_4nodes}};
-} // namespace DG_solver::Mesh
+
+} // namespace DG::Mesh
 
 #endif

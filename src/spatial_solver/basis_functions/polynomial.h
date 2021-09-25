@@ -5,7 +5,7 @@
 #include <cstddef>
 #include <vector>
 
-namespace DG_solver {
+namespace DG {
 /**
  * @brief General polynomial class
  *
@@ -43,5 +43,5 @@ public:
    **/
   double get_min_node_distance(const arma::vec quad_nodes) const;
 };
-} // namespace DG_solver
+} // namespace DG
 #endif

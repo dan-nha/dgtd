@@ -8,7 +8,7 @@
 #include <climits>
 #include <sstream>
 
-namespace DG_solver::Mesh {
+namespace DG::Mesh {
 
 Import_mesh_data::Import_mesh_data(const std::string &filename)
     : mesh_name(filename), dimension(this->get_dimension()) {}
@@ -355,4 +355,4 @@ void Import_mesh_data::goto_mesh_section(
   }
 }
 
-} // namespace DG_solver::Mesh
+} // namespace DG::Mesh

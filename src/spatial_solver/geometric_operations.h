@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-namespace DG_solver {
+namespace DG {
 /**
  * @brief In DGTD the strong formulation of a given PDE is solved on
  * size independent unit integrals on each finite elements. Some of the
@@ -33,10 +33,9 @@ public:
       const size_t elem_tag);
 
   /// @brief Back-transform of convert_phys_to_ref_coord(...)
-  double convert_ref_to_phys_coord(
-      const double ref_coord, 
-      const size_t elem_tag);
+  double
+  convert_ref_to_phys_coord(const double ref_coord, const size_t elem_tag);
 };
-} // namespace DG_solver
+} // namespace DG
 
 #endif

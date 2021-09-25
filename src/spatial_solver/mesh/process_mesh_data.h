@@ -8,7 +8,7 @@
 #include <tuple>
 #include <vector>
 
-namespace DG_solver::Mesh {
+namespace DG::Mesh {
 
 /**
  * @brief Processing the mesh data imported from a Gmsh file, so that we
@@ -76,6 +76,6 @@ private:
   bool is_contour(const size_t physical_tag);
   bool is_region(const size_t physical_tag);
 };
-} // namespace DG_solver::Mesh
+} // namespace DG::Mesh
 
 #endif

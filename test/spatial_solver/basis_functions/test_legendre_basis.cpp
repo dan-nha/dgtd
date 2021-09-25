@@ -6,7 +6,7 @@
 namespace utf = boost::unit_test;
 namespace tt = boost::test_tools;
 
-namespace DG_solver {
+namespace DG {
 
 // hard-coded (tabulated) values were taken from
 // https://en.wikipedia.org/wiki/Gaussian_quadrature
@@ -32,4 +32,4 @@ BOOST_AUTO_TEST_CASE(minimal_node_distance, *utf::tolerance(1e-16)) {
   arma::vec nodes({1, 4, 7, 12, 19});
   BOOST_TEST(gauss_legendre.get_min_node_distance(nodes) == 3);
 }
-} // namespace DG_solver
+} // namespace DG

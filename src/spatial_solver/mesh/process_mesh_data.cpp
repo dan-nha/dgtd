@@ -1,6 +1,6 @@
 #include "process_mesh_data.h"
 
-namespace DG_solver::Mesh {
+namespace DG::Mesh {
 
 Process_mesh_data::Process_mesh_data(const std::string &_mesh_name)
     : Import_mesh_data(_mesh_name), mesh_name(_mesh_name),
@@ -205,4 +205,4 @@ bool Process_mesh_data::is_region(const size_t physical_tag) {
   }
 }
 
-} // namespace DG_solver::Mesh
+} // namespace DG::Mesh

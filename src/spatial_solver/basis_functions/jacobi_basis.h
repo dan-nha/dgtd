@@ -5,7 +5,7 @@
 #include <cstddef>
 #include <vector>
 
-namespace DG_solver {
+namespace DG {
 /**
  * @brief Create quadrature nodes for the spatial solver.
  *
@@ -129,5 +129,5 @@ private:
       const size_t polynomial_order,
       const double position) const;
 };
-} // namespace DG_solver
+} // namespace DG
 #endif

@@ -8,7 +8,7 @@
 #include <tuple>
 #include <vector>
 
-namespace DG_solver::Mesh {
+namespace DG::Mesh {
 /**
  * @brief Class to import the mesh data from Gmsh files. The Gmsh sections
  * of interest, i.e. Meshformat, PhysicalNames, Entities, Nodes, and
@@ -137,6 +137,6 @@ private:
 protected:
   const size_t dimension;
 };
-} // namespace DG_solver::Mesh
+} // namespace DG::Mesh
 
 #endif

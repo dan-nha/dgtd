@@ -1,6 +1,6 @@
 #include "geometric_operations.h"
 
-namespace DG_solver {
+namespace DG {
 
 Geometric_operations::Geometric_operations(
     const std::string &mesh_filename)
@@ -35,4 +35,4 @@ double Geometric_operations::convert_ref_to_phys_coord(
                                    this->get_geometric_factor(elem_tag);
 }
 //-------------------------------------------------------------------------
-} // namespace DG_solver
+} // namespace DG

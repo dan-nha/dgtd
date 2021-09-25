@@ -3,7 +3,7 @@
 #include <boost/log/trivial.hpp>
 #include <cmath>
 
-namespace DG_solver {
+namespace DG {
 
 arma::vec Jacobi_basis::get_gauss_lobatto_nodes(
     const double alpha,
@@ -246,4 +246,4 @@ void Jacobi_basis::apply_reccurence(
     a_old = a_new;
   }
 }
-} // namespace DG_solver
+} // namespace DG

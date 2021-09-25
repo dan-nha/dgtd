@@ -13,7 +13,7 @@
 #include <armadillo>
 #include <string>
 
-namespace DG_solver {
+namespace DG {
 /**
  * @brief Here I compute the matrix operations needed for the DG (spatial)
  * scheme. Instead of computing the mass, stiffness and face matrix
@@ -97,7 +97,7 @@ private:
   const size_t polynomial_order;
   const arma::vec nodes;
 };
-} // namespace DG_solver
+} // namespace DG
 
 #include "elementwise_operations.tpp"
 

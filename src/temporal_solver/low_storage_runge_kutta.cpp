@@ -2,7 +2,7 @@
 #include "../tools/custom_errors.h"
 #include "butcher_coeffs.h"
 
-namespace TD_solver {
+namespace TD {
 arma::mat Low_storage_runge_kutta::evolve_in_time(
     const std::function<arma::mat(arma::mat u, double t)> &pde,
     const std::vector<double> &butcher_coeff1,
@@ -39,9 +39,9 @@ Low_storage_runge_kutta::get_butcher_coeffs(
         Lsrk_45_carpenter.butcher_coeff3};
   } else {
     throw Not_implemented(
-        "Low-storage Runge-Kutta scheme of order " + std::to_string(order) +
-        " and stage " + std::to_string(num_stages) +
-        " currently not implemented. ");
+        "Low-storage Runge-Kutta scheme of order " +
+        std::to_string(order) + " and stage " +
+        std::to_string(num_stages) + " currently not implemented. ");
   }
 }
-} // namespace TD_solver
+} // namespace TD

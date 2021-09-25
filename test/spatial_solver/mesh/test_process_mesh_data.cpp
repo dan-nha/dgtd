@@ -3,7 +3,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-namespace DG_solver::Mesh {
+namespace DG::Mesh {
 
 const std::string root_dir(DGTD_ROOT);
 const std::string mesh_dir("/test/spatial_solver/mesh/test_meshes/");
@@ -93,4 +93,4 @@ BOOST_AUTO_TEST_CASE(finite_elem_size) {
 }
 
 BOOST_AUTO_TEST_SUITE_END();
-} // namespace DG_solver::Mesh
+} // namespace DG::Mesh

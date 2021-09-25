@@ -1,6 +1,6 @@
 #include "polynomial.h"
 
-namespace DG_solver {
+namespace DG {
 double
 Polynomial::get_min_node_distance(const arma::vec quad_nodes) const {
 
@@ -10,4 +10,4 @@ Polynomial::get_min_node_distance(const arma::vec quad_nodes) const {
   }
   return *std::min_element(dist.begin(), dist.end());
 }
-} // namespace DG_solver
+} // namespace DG

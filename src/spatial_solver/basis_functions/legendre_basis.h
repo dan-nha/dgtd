@@ -8,7 +8,7 @@
 #include <cstddef>
 #include <vector>
 
-namespace DG_solver {
+namespace DG {
 /**
  * @brief Create Legendre polynomials, their gradients, and
  * quadrature nodes for the spatial solver.
@@ -48,5 +48,5 @@ public:
       const size_t polynomial_order,
       const double position) const;
 };
-} // namespace DG_solver
+} // namespace DG
 #endif

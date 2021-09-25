@@ -8,7 +8,7 @@
 namespace utf = boost::unit_test;
 namespace tt = boost::test_tools;
 
-namespace DG_solver {
+namespace DG {
 BOOST_AUTO_TEST_CASE(vandermonde, *utf::tolerance(1e-16)) {
   /**
    * Reference values taken from Matlab nodal DGTD code by Hesthaven
@@ -204,4 +204,4 @@ BOOST_AUTO_TEST_CASE(lift_matrix, *utf::tolerance(1e-16)) {
     }
   }
 }
-} // namespace DG_solver
+} // namespace DG

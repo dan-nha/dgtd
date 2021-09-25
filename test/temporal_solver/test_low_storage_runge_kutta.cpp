@@ -6,7 +6,7 @@
 namespace utf = boost::unit_test;
 namespace tt = boost::test_tools;
 
-namespace TD_solver {
+namespace TD {
 Low_storage_runge_kutta lsrk_solver;
 /**
  * Reference values taken from Matlab nodal DGTD code by Hesthaven
@@ -63,4 +63,4 @@ BOOST_AUTO_TEST_CASE(evolve_in_time, *utf::tolerance(1e-16)) {
   BOOST_TEST(
       first_evolution.front() == 0.021330398714844, tt::tolerance(1e-13));
 }
-} // namespace TD_solver
+} // namespace TD
