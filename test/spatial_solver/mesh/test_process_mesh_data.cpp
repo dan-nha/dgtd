@@ -1,6 +1,5 @@
 #include "../../../../src/spatial_solver/mesh/mesh.h"
 #include "../../../../src/spatial_solver/mesh/process_mesh_data.h"
-//#include "../../../src/tools/custom_errors.h"
 
 #include <boost/test/unit_test.hpp>
 

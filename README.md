@@ -65,7 +65,11 @@ You can find example meshes under `examples`.
 
 
 ## Documentation
-You will mostly find the motivation for certain design choices documented in this code. If reasonable, I will abstain from descriptions of what methods are supposed to do as the names and the code should be fairly verbose in this regard. I will rather give an explanation why this method exists and give some context.
+I rather give some motivation for certain design choices, and the context
+of certain methods than describe what a part of code is doing.  In this
+regard, I hope the given names and the implementation to be verbose enough
+to be able to abstain from lengthy documentation. This might not always be
+possible though.
 
 To build the documentation go to the `doc` directory and type the following command.
 

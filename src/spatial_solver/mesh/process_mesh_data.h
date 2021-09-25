@@ -12,7 +12,12 @@ namespace DG_solver::Mesh {
 
 /**
  * @brief Processing the mesh data imported from a Gmsh file, so that we
- * have access to the data which is relevant to the DG scheme.
+ * have access to the data which is relevant to the DG scheme.<br>
+ * Note, that in DGTD the strong formulation of a given PDE is solved on
+ * size independent unit integrals on each finite elements. Some of the
+ * following methods are implemented with regards to the conversion from
+ * integrals operating on physical coordinates to those unit (reference)
+ * integrals.
  */
 class Process_mesh_data : public Import_mesh_data {
 public:
@@ -32,19 +37,15 @@ public:
   std::vector<size_t>
   get_ordered_elems(const std::vector<size_t> elem_tags);
 
-  /**
-   * @brief In DGTD the strong formulation of a given PDE, an integral
-   * formulation is solved on size independent unit integrals. To obtain
-   * the physical integrals from the results, I need to calculate the
-   * so-called geometric factor, i.e. the scaling factor for the transition
-   * between unit integral and physical integral, which is given by the
-   * size of an element.
-   */
+  /** 
+   * @brief The element size is needed to convert physical coordinate
+   * information to reference coordinate information and vice versa.   
+   * */
   double get_elem_size(const size_t elem_tag);
 
   /**
    * @brief Get left and right node coordinate of a 1D finite element.
-   * These are needed to figure out the size of an element.
+   * Among others, this method is needed to calculate the element size.
    * */
   std::tuple<double, double> get_elem_coords(const size_t elem_tag);
 
