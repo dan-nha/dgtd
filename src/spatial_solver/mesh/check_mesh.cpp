@@ -8,12 +8,13 @@
 
 namespace Mesh {
 Check_mesh::Check_mesh(const std::string &filename)
-    : mesh_name(filename), begin_specifier(
-                               {{"$MeshFormat", false},
-                                {"$PhysicalNames", false},
-                                {"$Entities", false},
-                                {"$Nodes", false},
-                                {"$Elements", false}}),
+    : mesh_name(filename), 
+    begin_specifier(
+          {{"$MeshFormat", false},
+           {"$PhysicalNames", false},
+           {"$Entities", false},
+           {"$Nodes", false},
+           {"$Elements", false}}),
       end_specifier(
           {{"$EndMeshFormat", false},
            {"$EndPhysicalNames", false},

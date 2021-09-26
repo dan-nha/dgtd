@@ -1,4 +1,4 @@
-# make temporal_solver library
+# make spatial_solver library
 file(GLOB_RECURSE spatial_solver_sources ${CMAKE_CURRENT_SOURCE_DIR} "*.cpp")
 add_library(spatial_solver SHARED ${spatial_solver_sources})
 

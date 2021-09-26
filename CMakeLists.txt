@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #
 # To build the oridnary MiniDGTD version type in 
 # $ cmake .
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast -std=c++17")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast -std=c++17 -frtti")
 #
 # To build the debug MiniDGTD version type in
 # $ cmake -DCMAKE_BUILD_TYPE=Debug .

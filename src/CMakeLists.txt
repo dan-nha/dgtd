@@ -7,7 +7,7 @@ add_executable(${dgtd_exec} ${dgtd_sources})
 target_link_libraries(${dgtd_exec} PRIVATE
     spatial_solver
     temporal_solver
-    #pde
+    pde
     cnpy
     ${Boost_LIBRARIES}
     ${BLAS_LIBRARIES}
@@ -21,5 +21,5 @@ install(TARGETS ${PROJECT_NAME} DESTINATION bin)
 # Add subdirectories
 add_subdirectory("spatial_solver")
 add_subdirectory("temporal_solver")
-#add_subdirectory("pde")
+add_subdirectory("pde")
 add_subdirectory("tools")
