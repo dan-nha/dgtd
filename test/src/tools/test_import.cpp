@@ -1,9 +1,11 @@
-#include "../../src/tools/import.h"
+#include "../../../src/tools/import.h"
 
 #include <boost/test/unit_test.hpp>
 #include <fstream>
 #include <string>
 #include <vector>
+
+BOOST_AUTO_TEST_SUITE(tools);
 
 BOOST_AUTO_TEST_CASE(get_line_entries) {
   using namespace Import;
@@ -34,7 +36,7 @@ BOOST_AUTO_TEST_CASE(get_line_entries_from_file) {
   using namespace Import;
 
   const std::string root_dir(DGTD_ROOT);
-  std::string filename(root_dir + "/test/tools/test.txt");
+  std::string filename(root_dir + "/test/src/tools/test.txt");
   std::ifstream file(filename.c_str());
 
   BOOST_TEST(get_next_line_entry<std::string>(file) == "Hi!");
@@ -51,3 +53,5 @@ BOOST_AUTO_TEST_CASE(get_line_entries_from_file) {
   BOOST_TEST(get_next_line_entries<std::string>(file).back() == "(what?)");
   BOOST_TEST(line_number == 8);
 }
+
+BOOST_AUTO_TEST_SUITE_END();

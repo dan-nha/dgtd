@@ -1,4 +1,4 @@
-#include "../../../src/spatial_solver/basis_functions/legendre_basis.h"
+#include "../../../../src/spatial_solver/basis_functions/legendre_basis.h"
 
 #include <armadillo>
 #include <boost/test/unit_test.hpp>
@@ -7,7 +7,7 @@ namespace utf = boost::unit_test;
 namespace tt = boost::test_tools;
 
 namespace DG {
-
+BOOST_AUTO_TEST_SUITE(basis_functions);
 // hard-coded (tabulated) values were taken from
 // https://en.wikipedia.org/wiki/Gaussian_quadrature
 //
@@ -32,4 +32,6 @@ BOOST_AUTO_TEST_CASE(minimal_node_distance, *utf::tolerance(1e-16)) {
   arma::vec nodes({1, 4, 7, 12, 19});
   BOOST_TEST(gauss_legendre.get_min_node_distance(nodes) == 3);
 }
+
+BOOST_AUTO_TEST_SUITE_END();
 } // namespace DG

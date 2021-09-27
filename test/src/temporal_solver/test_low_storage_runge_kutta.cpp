@@ -1,12 +1,14 @@
 #define BOOST_TEST_MODULE test_temporal_solver
 
-#include "../../src/temporal_solver/low_storage_runge_kutta.h"
+#include "../../../src/temporal_solver/low_storage_runge_kutta.h"
 #include <boost/test/unit_test.hpp>
 
 namespace utf = boost::unit_test;
 namespace tt = boost::test_tools;
 
 namespace TD {
+
+BOOST_AUTO_TEST_SUITE(runge_kutta);
 Low_storage_runge_kutta lsrk_solver;
 /**
  * Reference values taken from Matlab nodal DGTD code by Hesthaven
@@ -63,4 +65,6 @@ BOOST_AUTO_TEST_CASE(evolve_in_time, *utf::tolerance(1e-16)) {
   BOOST_TEST(
       first_evolution.front() == 0.021330398714844, tt::tolerance(1e-13));
 }
+
+BOOST_AUTO_TEST_SUITE_END();
 } // namespace TD

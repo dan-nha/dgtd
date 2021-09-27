@@ -1,5 +1,5 @@
-#include "../../src/spatial_solver/basis_functions/legendre_basis.h"
-#include "../../src/spatial_solver/elementwise_operations.h"
+#include "../../../src/spatial_solver/basis_functions/legendre_basis.h"
+#include "../../../src/spatial_solver/elementwise_operations.h"
 
 #include <boost/test/unit_test.hpp>
 #include <armadillo>
@@ -9,6 +9,8 @@ namespace utf = boost::unit_test;
 namespace tt = boost::test_tools;
 
 namespace DG {
+
+BOOST_AUTO_TEST_SUITE(elementwise_operations);
 BOOST_AUTO_TEST_CASE(vandermonde, *utf::tolerance(1e-16)) {
   /**
    * Reference values taken from Matlab nodal DGTD code by Hesthaven
@@ -204,4 +206,6 @@ BOOST_AUTO_TEST_CASE(lift_matrix, *utf::tolerance(1e-16)) {
     }
   }
 }
+
+BOOST_AUTO_TEST_SUITE_END()
 } // namespace DG

@@ -6,7 +6,7 @@
 namespace DG::Mesh {
 
 const std::string root_dir(DGTD_ROOT);
-const std::string mesh_dir("/test/spatial_solver/mesh/test_meshes/");
+const std::string mesh_dir("/test/src/spatial_solver/mesh/test_meshes/");
 
 //-------------------------------------------------------------------------
 BOOST_AUTO_TEST_SUITE(process_mesh);

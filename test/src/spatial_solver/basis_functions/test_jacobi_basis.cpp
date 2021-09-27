@@ -1,4 +1,4 @@
-#include "../../../src/spatial_solver/basis_functions/jacobi_basis.h"
+#include "../../../../src/spatial_solver/basis_functions/jacobi_basis.h"
 
 #include <boost/test/unit_test.hpp>
 #include <cmath>
@@ -6,7 +6,10 @@
 namespace utf = boost::unit_test;
 namespace tt = boost::test_tools;
 
+
 namespace DG {
+
+BOOST_AUTO_TEST_SUITE(basis_functions);
 Jacobi_basis jacobi;
 
 BOOST_AUTO_TEST_CASE(gauss_jacobi_nodes, *utf::tolerance(1e-16)) {
@@ -80,4 +83,7 @@ BOOST_AUTO_TEST_CASE(jacobi_polynomial_gradient, *utf::tolerance(1e-16)) {
       jacobi.get_jacobi_polynomial_gradient(1, 3, 2, 2.) == 18.375,
       tt::tolerance(1e-14));
 }
+
+BOOST_AUTO_TEST_SUITE_END();
 } // namespace DG
+

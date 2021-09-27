@@ -1,4 +1,4 @@
-#include "../../src/pde/advection.h"
+#include "../../../src/pde/advection.h"
 
 #include <boost/test/unit_test.hpp>
 

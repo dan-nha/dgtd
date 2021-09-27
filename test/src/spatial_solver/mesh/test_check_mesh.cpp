@@ -1,5 +1,5 @@
-#include "../../../src/spatial_solver/mesh/check_mesh.h"
-#include "../../../src/tools/custom_errors.h"
+#include "../../../../src/spatial_solver/mesh/check_mesh.h"
+#include "../../../../src/tools/custom_errors.h"
 
 #include <boost/test/unit_test.hpp>
 #include <string>
@@ -17,7 +17,7 @@ BOOST_AUTO_TEST_SUITE(check_mesh);
 
 const std::string root_dir(DGTD_ROOT);
 const std::string
-    mesh_dir("/test/spatial_solver/mesh/test_meshes/fail_meshes/");
+    mesh_dir("/test/src/spatial_solver/mesh/test_meshes/fail_meshes/");
 
 std::string error_msg;
 bool expected_msg(const Mesh_error &ex) {
