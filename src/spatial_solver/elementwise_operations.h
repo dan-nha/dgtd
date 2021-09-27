@@ -52,7 +52,7 @@ public:
    * (https://github.com/tcew/nodal-dg/blob/master/Codes1.1/Codes1D/Dmatrix1D.m)
    * \cite hesthaven2008nodal (chapter 3.2, Dmatrix1D.m)
    */
-  arma::mat get_differentiation_matrix() const;
+  arma::mat get_diff_matrix() const;
 
   /**
    * @brief Compute the lift matrix

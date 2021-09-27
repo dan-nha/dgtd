@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE(grad_vandermonde, *utf::tolerance(1e-16)) {
   }
 }
 //---------------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(differentiation_matrix, *utf::tolerance(1e-16)) {
+BOOST_AUTO_TEST_CASE(diff_matrix, *utf::tolerance(1e-16)) {
   /**
    * Reference values taken from Matlab nodal DGTD code by Hesthaven
    * and Warburton \cite hesthaven2008nodal (e.g. Dmatrix1D.m)
@@ -115,30 +115,30 @@ BOOST_AUTO_TEST_CASE(differentiation_matrix, *utf::tolerance(1e-16)) {
   {
     const double polynomial_order(1);
     Elementwise_operations<Legendre_basis> eo(polynomial_order);
-    arma::mat differentiation_matrix(eo.get_differentiation_matrix());
+    arma::mat diff_matrix(eo.get_diff_matrix());
 
-    BOOST_TEST(differentiation_matrix(0, 0) == -0.5, tt::tolerance(1e-15));
-    BOOST_TEST(differentiation_matrix(0, 1) == 0.5, tt::tolerance(1e-15));
-    BOOST_TEST(differentiation_matrix(1, 0) == -0.5, tt::tolerance(1e-15));
-    BOOST_TEST(differentiation_matrix(1, 1) == 0.5, tt::tolerance(1e-15));
+    BOOST_TEST(diff_matrix(0, 0) == -0.5, tt::tolerance(1e-15));
+    BOOST_TEST(diff_matrix(0, 1) == 0.5, tt::tolerance(1e-15));
+    BOOST_TEST(diff_matrix(1, 0) == -0.5, tt::tolerance(1e-15));
+    BOOST_TEST(diff_matrix(1, 1) == 0.5, tt::tolerance(1e-15));
   }
 
   {
     const double polynomial_order(2);
     Elementwise_operations<Legendre_basis> eo(polynomial_order);
-    arma::mat differentiation_matrix(eo.get_differentiation_matrix());
+    arma::mat diff_matrix(eo.get_diff_matrix());
 
-    BOOST_TEST(differentiation_matrix(0, 0) == -1.5, tt::tolerance(1e-15));
-    BOOST_TEST(differentiation_matrix(0, 1) == 2.0, tt::tolerance(1e-15));
-    BOOST_TEST(differentiation_matrix(0, 2) == -0.5, tt::tolerance(1e-15));
+    BOOST_TEST(diff_matrix(0, 0) == -1.5, tt::tolerance(1e-15));
+    BOOST_TEST(diff_matrix(0, 1) == 2.0, tt::tolerance(1e-15));
+    BOOST_TEST(diff_matrix(0, 2) == -0.5, tt::tolerance(1e-15));
 
-    BOOST_TEST(differentiation_matrix(1, 0) == -0.5, tt::tolerance(1e-15));
-    BOOST_TEST(differentiation_matrix(1, 1) == 0.0, tt::tolerance(1e-15));
-    BOOST_TEST(differentiation_matrix(1, 2) == 0.5, tt::tolerance(1e-15));
+    BOOST_TEST(diff_matrix(1, 0) == -0.5, tt::tolerance(1e-15));
+    BOOST_TEST(diff_matrix(1, 1) == 0.0, tt::tolerance(1e-15));
+    BOOST_TEST(diff_matrix(1, 2) == 0.5, tt::tolerance(1e-15));
 
-    BOOST_TEST(differentiation_matrix(2, 0) == 0.5, tt::tolerance(1e-15));
-    BOOST_TEST(differentiation_matrix(2, 1) == -2.0, tt::tolerance(1e-15));
-    BOOST_TEST(differentiation_matrix(2, 2) == 1.5, tt::tolerance(1e-15));
+    BOOST_TEST(diff_matrix(2, 0) == 0.5, tt::tolerance(1e-15));
+    BOOST_TEST(diff_matrix(2, 1) == -2.0, tt::tolerance(1e-15));
+    BOOST_TEST(diff_matrix(2, 2) == 1.5, tt::tolerance(1e-15));
   }
 }
 //---------------------------------------------------------------------------------

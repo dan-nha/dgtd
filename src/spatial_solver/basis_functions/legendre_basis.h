@@ -4,7 +4,6 @@
 #include "jacobi_basis.h"
 #include "polynomial.h"
 
-#include <armadillo>
 #include <cstddef>
 #include <vector>
 
@@ -28,7 +27,7 @@ public:
    * where the parameters of the Gauss-Lobatto nodes are set to
    * \f$\alpha=\beta=0\f$.
    */
-  arma::vec get_quad_nodes(const size_t polynomial_order) const;
+  std::vector<double> get_quad_nodes(const size_t polynomial_order) const;
 
   /**
    * @brief The Legendre polynomials are derived from the Jacobi

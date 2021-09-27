@@ -2,7 +2,7 @@
 
 namespace DG {
 double
-Polynomial::get_min_node_distance(const arma::vec quad_nodes) const {
+Polynomial::get_min_node_distance(const std::vector<double> quad_nodes) const {
 
   std::vector<double> dist;
   for (size_t i(1); i < quad_nodes.size(); ++i) {

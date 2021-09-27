@@ -39,7 +39,7 @@ public:
    * @note For polynomial order \f$n=1\f$ the only two nodes are the outer
    * nodes.
    */
-  arma::vec get_gauss_lobatto_nodes(
+  std::vector<double> get_gauss_lobatto_nodes(
       const double alpha,
       const double beta,
       const size_t polynomial_order) const;

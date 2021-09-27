@@ -1,11 +1,9 @@
 #include "legendre_basis.h"
 
-#include <armadillo>
-#include <cassert>
 #include <cmath>
 
 namespace DG {
-arma::vec
+std::vector<double>
 Legendre_basis::get_quad_nodes(const size_t polynomial_order) const {
   return this->get_gauss_lobatto_nodes(0, 0, polynomial_order);
 };

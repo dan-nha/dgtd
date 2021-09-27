@@ -23,7 +23,7 @@ arma::mat Elementwise_operations<Basis>::get_vandermonde_matrix() const {
 //-------------------------------------------------------------------------
 template <class Basis>
 arma::mat
-Elementwise_operations<Basis>::get_differentiation_matrix() const {
+Elementwise_operations<Basis>::get_diff_matrix() const {
 
   arma::mat diff_mat(
       this->polynomial_order + 1, this->polynomial_order + 1);

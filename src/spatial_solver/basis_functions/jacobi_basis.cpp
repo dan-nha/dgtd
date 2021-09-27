@@ -5,7 +5,7 @@
 
 namespace DG {
 
-arma::vec Jacobi_basis::get_gauss_lobatto_nodes(
+std::vector<double> Jacobi_basis::get_gauss_lobatto_nodes(
     const double alpha,
     const double beta,
     const size_t polynomial_order) const {
@@ -17,10 +17,10 @@ arma::vec Jacobi_basis::get_gauss_lobatto_nodes(
         "To calculate the Gauss-Lobatto quadrature nodes the polynomial "
         "order must be >= 1.");
   } else {
-    arma::vec gl_nodes(polynomial_order + 1);
+    std::vector<double> gl_nodes(polynomial_order + 1);
     gl_nodes.front() = -1.0;
     for (size_t i(1); i < polynomial_order; ++i) {
-      gl_nodes(i) = this->get_gauss_jacobi_nodes(
+      gl_nodes[i] = this->get_gauss_jacobi_nodes(
           alpha + 1.0, beta + 1.0, polynomial_order - 2)(i - 1);
     }
     gl_nodes.back() = 1.0;

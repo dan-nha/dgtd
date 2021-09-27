@@ -1,9 +1,10 @@
 #ifndef POLYNOMIAL_H
 #define POLYNOMIAL_H
 
-#include <armadillo>
 #include <cstddef>
 #include <vector>
+#include <cmath>
+#include <algorithm>
 
 namespace DG {
 /**
@@ -19,7 +20,7 @@ class Polynomial {
 public:
   Polynomial(){};
 
-  virtual arma::vec
+  virtual std::vector<double>
   get_quad_nodes(const size_t polynomial_order) const = 0;
 
   virtual double get_polynomial(
@@ -41,7 +42,7 @@ public:
    * @brief Calculate the smallest distance between a given set of ordered
    * quadrature nodes. In 1D that order is from left to right.
    **/
-  double get_min_node_distance(const arma::vec quad_nodes) const;
+  double get_min_node_distance(const std::vector<double> quad_nodes) const;
 };
 } // namespace DG
 #endif
