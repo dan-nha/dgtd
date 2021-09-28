@@ -10,7 +10,7 @@ class Advection: public Pde{
     inline std::tuple<double, double> get_boundary_conditions(
       const arma::mat &fields,
       const double time) const override {
-      return {-sin(2*M_PI*time), 0.};
+      return {-sin(flux_prefactor*time), 0.};
     };
 
     arma::mat get_initial_values(
