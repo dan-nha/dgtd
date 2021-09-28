@@ -12,15 +12,14 @@ arma::mat Pde::get_spatial_scheme(
   const arma::mat volume_fields(this->get_volume_fields(
       fields, 
       geometric_factors, 
-      diff_matrix, 
-      time));
+      diff_matrix));
 
   const arma::mat surface_fields(this->get_surface_fields(
       fields,
+      time,
       geometric_factors,
       lift_matrix,
-      upwind_param,
-      time));
+      upwind_param));
 
   return volume_fields + surface_fields;
 }
@@ -28,8 +27,7 @@ arma::mat Pde::get_spatial_scheme(
 arma::mat Pde::get_volume_fields(
     const arma::mat &fields,
     const std::vector<double> &geometric_factors,
-    const arma::mat &diff_matrix,
-    const double time) const {
+    const arma::mat &diff_matrix) const {
 
   const arma::mat fluxes(this->get_flux(
         fields, this->get_volume_flux_prefactor()));

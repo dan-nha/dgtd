@@ -50,8 +50,6 @@ public:
    * [-1,1].
    * @param[in] diff_matrix Differentiation matrix for reference integrals
    * (element length independent)
-   * @param[in] time Current time which is passed to the boundary
-   * condition contained in the volume field calculation
    *
    * @return Matrix of volume fields, where each column represents an
    * element
@@ -59,8 +57,7 @@ public:
   arma::mat get_volume_fields(
       const arma::mat &fields,
       const std::vector<double> &geometric_factors,
-      const arma::mat &diff_matrix,
-      const double time) const;
+      const arma::mat &diff_matrix) const;
   
   /**
    * @brief Calculate the surface field, i.e. \f$ \underline{\mathbf s}_h =
@@ -77,6 +74,8 @@ public:
    * (p. 20 (chapter 2.1), p. 25 (chapter 2.2)).
    *
    * @param[in] fields Fields of the previous time step
+   * @param[in] time Current time which is passed to the boundary
+   * condition contained in the volume field calculation
    * @param[in] geometric_factors Geometric factors of each element to
    * convert physical integrals from [a, b] to reference integrals from
    * [-1,1].
@@ -85,18 +84,16 @@ public:
    * @param[in] upwind_param Upwind parameter \f$ \in [0,1]\f$, corresponds
    * to \f$(1-\alpha)\f$ in Hesthaven and Warburton's textbook
    * @cite hesthaven2008nodal (p.25, chapter 2.2).
-   * @param[in] time Current time which is passed to the boundary
-   * condition contained in the volume field calculation
    *
    * @return Matrix of surface fields, where each column represents an
    * element
    */
   virtual arma::mat get_surface_fields(
       const arma::mat &fields,
+      const double time,
       const std::vector<double> &geometric_factors,
       const arma::mat &lift_matrix,
-      const double upwind_param,
-      const double time) const = 0;
+      const double upwind_param) const = 0;
  
   inline arma::mat
   get_flux(const arma::mat &fields, const double flux_prefactor) const {

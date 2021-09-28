@@ -20,10 +20,10 @@ arma::mat Advection::get_initial_values(
 //------------------------------------------------------------------------
 arma::mat Advection::get_surface_fields(
       const arma::mat &fields,
+      const double time,
       const std::vector<double> &geometric_factors,
       const arma::mat &lift_matrix,
-      const double upwind_param,
-      const double time) const {
+      const double upwind_param) const {
 
   std::tuple<double, double> boundary_conditions(
       this->get_boundary_conditions(fields, time));
