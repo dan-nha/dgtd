@@ -2,6 +2,9 @@
 
 #include <boost/test/unit_test.hpp>
 
+namespace utf = boost::unit_test;
+namespace tt = boost::test_tools;
+
 BOOST_AUTO_TEST_SUITE(advection);
 
 Advection advection(2*M_PI);
@@ -15,11 +18,11 @@ BOOST_AUTO_TEST_CASE(boundary_conditions) {
   BOOST_TEST(right_bc == 0);
 }
 
-BOOST_AUTO_TEST_CASE(initial_values) {
-  const arma::mat nodes({{M_PI/2., 3, 5}});
+BOOST_AUTO_TEST_CASE(initial_values, *utf::tolerance(1e-16)) {
+  const arma::mat nodes({{M_PI/2., M_PI, 0}});
   const arma::mat ini_vals(advection.get_initial_values(nodes));
   BOOST_TEST(ini_vals(0,0) == 1);
-  BOOST_TEST(ini_vals(0,1) == 0);
+  BOOST_TEST(ini_vals(0,1) == 0, tt::tolerance(1e-15));
   BOOST_TEST(ini_vals(0,2) == 0);
 }
 

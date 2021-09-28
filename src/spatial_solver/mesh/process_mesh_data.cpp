@@ -156,7 +156,7 @@ double Process_mesh_data::get_min_elem_size(const size_t region_tag) {
     elem_sizes.push_back(this->get_elem_size(elem_tag));
   }
 
-  return *std::min_element(std::begin(elem_sizes), std::end(elem_sizes));
+  return *std::min_element(elem_sizes.begin(), elem_sizes.end());
 }
 //-------------------------------------------------------------------------
 double Process_mesh_data::get_coord(

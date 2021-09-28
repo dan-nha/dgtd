@@ -20,5 +20,14 @@ BOOST_AUTO_TEST_CASE(coord_conversion) {
   BOOST_TEST(line.convert_ref_to_phys_coord(ref_coord, 3) == 1.);
 }
 
+BOOST_AUTO_TEST_CASE(min_dist) {
+  const std::vector<double> coords({0.3,1,1.7,5,7});
+  BOOST_TEST(line.get_min_distance(coords) == 0.7);
+}
+
+/**
+ * get_min_node_dist(...) methods are tested in test_dgtd_solver.cpp
+ */
+
 BOOST_AUTO_TEST_SUITE_END();
 } // namespace DG

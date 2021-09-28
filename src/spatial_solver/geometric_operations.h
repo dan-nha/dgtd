@@ -35,6 +35,15 @@ public:
   /// @brief Back-transform of convert_phys_to_ref_coord(...)
   double
   convert_ref_to_phys_coord(const double ref_coord, const size_t elem_tag);
+
+  double get_min_node_dist(
+      const std::vector<double> quad_nodes);
+
+  double get_min_node_dist(
+      const std::vector<double> quad_nodes,
+      const size_t region_tag);
+
+  double get_min_distance(const std::vector<double> coords) const;
 };
 } // namespace DG
 
