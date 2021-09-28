@@ -3,6 +3,7 @@
 #include "../../src/spatial_solver/basis_functions/legendre_basis.h"
 #include "../../src/spatial_solver/elementwise_operations.h"
 #include "../../src/temporal_solver/low_storage_runge_kutta.h"
+#include "../../src/tools/output.h"
 
 #include <boost/test/unit_test.hpp>
 
@@ -204,9 +205,11 @@ BOOST_AUTO_TEST_CASE(initial_spatial_scheme, *utf::tolerance(1e-16)) {
       tt::tolerance(1e-14));
 }
 
+/*
 BOOST_AUTO_TEST_CASE(solution) { 
   std::cout.precision(15);
   dgtd.get_solution(advection, 4, 5).raw_print(std::cout, "solution"); }
+  */
 
 BOOST_AUTO_TEST_SUITE_END();
 } // namespace DGTD

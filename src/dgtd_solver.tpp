@@ -40,16 +40,20 @@ arma::mat Dgtd_solver<Pde, Basis, TD_solver>::get_solution(
     const size_t runge_kutta_order, 
     const size_t runge_kutta_stages) const {
 
-  arma::mat fields(pde.get_initial_values(this->get_phys_node_coords()));
+  const arma::mat phys_node_coords(this->get_phys_node_coords());
+
+  Output output;
+  output.store_coords(phys_node_coords);
+
+  arma::mat fields(pde.get_initial_values(phys_node_coords));
 
   TD_solver lsrk;
   const auto [butcher_coeff1, butcher_coeff2, butcher_coeff3] =
       lsrk.get_butcher_coeffs(runge_kutta_order, runge_kutta_stages);
-
+  
   const std::vector<double> geo_factors(this->get_geometric_factors());
 
-  const double time(0.);
-  //for (double time(0.); time <= end_time; time += this->time_step) {
+  for (double time(0.); time <= end_time; time += this->time_step) {
     auto dg_scheme =
         [&pde, this, &fields, &time, &runge_kutta_stages, &geo_factors]
         (const arma::mat u, const double t) {
@@ -70,7 +74,9 @@ arma::mat Dgtd_solver<Pde, Basis, TD_solver>::get_solution(
         time,
         this->time_step,
         fields);
-  //}
+    output.store_time(time);
+    output.store_fields("Advection", fields);
+  }
   return fields;
 }
 //-------------------------------------------------------------------------
@@ -134,11 +140,12 @@ double Dgtd_solver<Pde, Basis, TD_solver>::get_min_node_dist() {
   return go.get_min_node_dist(this->quad_nodes);
 }
 //-------------------------------------------------------------------------
+/*
 template <class Pde, class Basis, class TD_solver>
 void Dgtd_solver<Pde, Basis, TD_solver>::store_results() const {
-  Output output;
-  output.store_coords(this->get_phys_node_coords());
+  Output::store_coords(this->get_phys_node_coords());
 }
+*/
 //-------------------------------------------------------------------------
 template <class Pde, class Basis, class TD_solver>
 bool Dgtd_solver<Pde, Basis, TD_solver>::is_field_name_valid(
