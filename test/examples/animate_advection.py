@@ -7,7 +7,7 @@ coords = np.load('coordinates.npy')
 times  =np.load('times.npy')
 
 fig, ax = plt.subplots(figsize=(5, 3))
-ax.set(xlim=(0, 9), ylim=(-2, 2))
+ax.set(xlim=(-3, 6), ylim=(-2, 2))
 
 def animate(i):
     ax.set_title('Frame %i' %i)

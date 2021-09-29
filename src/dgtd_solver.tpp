@@ -65,14 +65,23 @@ arma::mat Dgtd_solver<Pde, Basis, TD_solver>::get_solution(
               this->lift_matrix,
               this->upwind_param);
         };
+    /*
+    pde.get_spatial_scheme(
+        fields,
+        time,
+        geo_factors,
+        this->diff_matrix,
+        this->lift_matrix,
+        this->upwind_param).raw_print(std::cout, "rhs");
+        */
     fields = lsrk.evolve_in_time(
         dg_scheme,
+        time,
+        this->time_step,
         butcher_coeff1,
         butcher_coeff2,
         butcher_coeff3,
         runge_kutta_stages,
-        time,
-        this->time_step,
         fields);
     output.store_time(time);
     output.store_fields("Advection", fields);
@@ -128,7 +137,7 @@ double Dgtd_solver<Pde, Basis, TD_solver>::get_time_step() {
 
   const double min_node_dist(this->get_min_node_dist());
   const double dt(this->dt_factor*min_node_dist/(2*M_PI));
-  const double num_time_steps(std::ceil(end_time/dt)); 
+  const double num_time_steps(std::ceil(this->end_time/dt)); 
   
   return this->end_time / num_time_steps;
 }

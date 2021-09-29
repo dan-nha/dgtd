@@ -24,8 +24,8 @@ int main(int argc, char* argv[]) {
   stream_welcome_message();
 
   Mesh::Check_mesh check_mesh(argv[1]);
-  const size_t polynomial_order(3);
-  const double end_time(0.1);
+  const size_t polynomial_order(10);
+  const double end_time(100);
   const double dt_factor(0.75 * 0.5);
   const double upwind_param(1.);
 

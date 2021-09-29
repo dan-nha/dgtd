@@ -16,10 +16,10 @@ void Output::store_fields(
     const std::string &field_name, 
     const arma::mat &fields) const {
 
-  const std::string field_file_name(field_name + ".npy");
+  const std::string file_name(field_name + ".npy");
   cnpy::npy_save(
-      field_file_name,
+      file_name,
       &fields[0],
-      {1, fields.n_cols, fields.n_rows},
+      {1,fields.n_cols, fields.n_rows},
       "a");
 }

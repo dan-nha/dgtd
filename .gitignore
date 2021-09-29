@@ -19,6 +19,9 @@
 # Backup-files
 *.sw*
 
+# Output
+*.npy
+
 # Folders
 build
 doc/doxygen
