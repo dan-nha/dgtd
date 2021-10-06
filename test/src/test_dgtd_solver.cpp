@@ -119,6 +119,7 @@ BOOST_AUTO_TEST_CASE(initial_volume_fields, *utf::tolerance(5e-15)) {
   BOOST_TEST(ini_volume_fields(3, 2) == -7.280070146609996);
 }
 
+/*
 BOOST_AUTO_TEST_CASE(initial_surface_fields, *utf::tolerance(5e-15)) {
   // Tested against LIFT*(Fscale.*(du)) in AdvecRHS1D.m
   const arma::mat coords(dgtd.get_phys_node_coords());
@@ -146,7 +147,6 @@ BOOST_AUTO_TEST_CASE(initial_surface_fields, *utf::tolerance(5e-15)) {
   BOOST_TEST(upwind_surface_fields(3,0) == -1.182244214921098);
 }
 
-/*
 BOOST_AUTO_TEST_CASE(evolved_volume_fields, *utf::tolerance(1e-16)) {
   // Tested against -a*rx.*(Dr*u) in AdvecRHS1D.m
   const arma::mat coords(dgtd.get_phys_node_coords());

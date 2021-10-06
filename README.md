@@ -19,9 +19,7 @@ You will not see me opening any feature branches in this git repository. Obvious
 
 
 ## C++ Standard
-The predominant standard of this code is C++17, where I mostly make use of
-structured bindings.
-
+The standard of this code is C++20, where I mostly make use of the \<set\> library. 
 
 ## Requirements
 * g++

@@ -23,7 +23,6 @@ public:
   double get_time_step();
   double get_min_node_dist();
   bool is_field_name_valid(const std::string &field_name) const;
-  void store_results() const;
 
 private:
   Basis basis;

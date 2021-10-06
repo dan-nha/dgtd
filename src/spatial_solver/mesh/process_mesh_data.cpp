@@ -1,6 +1,7 @@
 #include "process_mesh_data.h"
 
 #include <algorithm>
+#include <set>
 
 namespace DG::Mesh {
 
@@ -12,7 +13,7 @@ std::vector<size_t>
 Process_mesh_data::get_finite_elems(const std::string &region_name) {
 
   auto phys_name_map(Import_mesh_data::import_gmsh_physical_names());
-  if (phys_name_map.find(region_name) != phys_name_map.end()) {
+  if (phys_name_map.contains(region_name)) {
     const size_t region_tag(phys_name_map[region_name]);
     if (is_region(region_tag) == false) {
       throw std::invalid_argument(
@@ -129,7 +130,7 @@ double
 Process_mesh_data::get_min_elem_size(const std::string &region_name) {
 
   auto phys_name_map(Import_mesh_data::import_gmsh_physical_names());
-  if (phys_name_map.find(region_name) != phys_name_map.end()) {
+  if (phys_name_map.contains(region_name)) {
     const size_t region_tag(phys_name_map[region_name]);
     if (is_region(region_tag) == false) {
       throw std::invalid_argument(
@@ -163,7 +164,7 @@ double Process_mesh_data::get_coord(
     const size_t node_tag,
     const size_t entity_tag) {
   auto curve_node(Import_mesh_data::import_gmsh_nodes());
-  if (curve_node.find(node_tag) != curve_node.end()) {
+  if (curve_node.contains(node_tag)) {
     return curve_node[node_tag].front();
   } else {
     throw std::invalid_argument(

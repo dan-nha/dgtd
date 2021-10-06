@@ -143,13 +143,6 @@ double Dgtd_solver<Pde, Basis, TD_solver>::get_min_node_dist() {
   return go.get_min_node_dist(this->quad_nodes);
 }
 //-------------------------------------------------------------------------
-/*
-template <class Pde, class Basis, class TD_solver>
-void Dgtd_solver<Pde, Basis, TD_solver>::store_results() const {
-  Output::store_coords(this->get_phys_node_coords());
-}
-*/
-//-------------------------------------------------------------------------
 template <class Pde, class Basis, class TD_solver>
 bool Dgtd_solver<Pde, Basis, TD_solver>::is_field_name_valid(
     const std::string &field_name) const {
