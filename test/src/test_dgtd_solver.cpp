@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_SUITE(dgtd_solver);
 /**
  * Advec1D.m
  * AdvecRHS1D.m
- * AdvecDriver1D.m: MeshGen1D(-3,6,3)
+ * AdvecDriver1D.m: N=3, MeshGen1D(-3,6,3)
  */
 
 const std::string root_dir(DGTD_ROOT);
@@ -38,9 +38,20 @@ Advection advection(2 * M_PI);
 
 BOOST_AUTO_TEST_CASE(phys_node_coords, *utf::tolerance(1e-16)) {
   const arma::mat coords(dgtd.get_phys_node_coords());
-  BOOST_TEST(coords.front() == -3);
-  BOOST_TEST(coords[1] == -2.170820393249937, tt::tolerance(1e-15));
-  BOOST_TEST(coords.back() == 6);
+  BOOST_TEST(coords(0, 0) == -3, tt::tolerance(1e-15));
+  BOOST_TEST(coords(1, 0) == -2.17082039324994, tt::tolerance(1e-14));
+  BOOST_TEST(coords(2, 0) == -0.829179606750063, tt::tolerance(1e-14));
+  BOOST_TEST(coords(3, 0) == 0, tt::tolerance(1e-15));
+
+  BOOST_TEST(coords(0, 1) == 0, tt::tolerance(1e-15));
+  BOOST_TEST(coords(1, 1) == 0.829179606750063, tt::tolerance(1e-14));
+  BOOST_TEST(coords(2, 1) == 2.17082039324994, tt::tolerance(1e-14));
+  BOOST_TEST(coords(3, 1) == 3, tt::tolerance(1e-15));
+
+  BOOST_TEST(coords(0, 2) == 3, tt::tolerance(1e-15));
+  BOOST_TEST(coords(1, 2) == 3.82917960675006, tt::tolerance(1e-14));
+  BOOST_TEST(coords(2, 2) == 5.17082039324994, tt::tolerance(1e-14));
+  BOOST_TEST(coords(3, 2) == 6, tt::tolerance(1e-15));
 }
 
 BOOST_AUTO_TEST_CASE(initial_values, *utf::tolerance(1e-16)) {
@@ -82,7 +93,7 @@ BOOST_AUTO_TEST_CASE(time_step, *utf::tolerance(1e-16)) {
       dgtd.get_time_step() == 0.033333333333333, tt::tolerance(1e-14));
 }
 
-BOOST_AUTO_TEST_CASE(initial_volume_fields, *utf::tolerance(1e-16)) {
+BOOST_AUTO_TEST_CASE(initial_volume_fields, *utf::tolerance(5e-15)) {
   // Tested against -a*rx.*(Dr*u) in AdvecRHS1D.m
   const arma::mat coords(dgtd.get_phys_node_coords());
   const arma::mat ini_vals(advection.get_initial_values(coords));
@@ -92,65 +103,66 @@ BOOST_AUTO_TEST_CASE(initial_volume_fields, *utf::tolerance(1e-16)) {
           .get_diff_matrix());
   const arma::mat ini_volume_fields(
       advection.get_volume_fields(ini_vals, geo_factors, diff_matrix));
-  BOOST_TEST(
-      ini_volume_fields(0, 0) == 7.438566190284299, tt::tolerance(1e-15));
-  BOOST_TEST(
-      ini_volume_fields(1, 0) == 2.975065528375445, tt::tolerance(1e-15));
-  BOOST_TEST(
-      ini_volume_fields(2, 0) == -3.682489439168077, tt::tolerance(1e-15));
-  BOOST_TEST(
-      ini_volume_fields(3, 0) == -7.448179281084407, tt::tolerance(1e-14));
+  BOOST_TEST(ini_volume_fields(0, 0) == 7.438566190284299);
+  BOOST_TEST(ini_volume_fields(1, 0) == 2.975065528375445);
+  BOOST_TEST(ini_volume_fields(2, 0) == -3.682489439168077);
+  BOOST_TEST(ini_volume_fields(3, 0) == -7.448179281084407);
 
-  BOOST_TEST(
-      ini_volume_fields(0, 1) == -7.448179281084415, tt::tolerance(1e-14));
-  BOOST_TEST(
-      ini_volume_fields(1, 1) == -3.682489439168079, tt::tolerance(1e-14));
-  BOOST_TEST(
-      ini_volume_fields(2, 1) == 2.975065528375442, tt::tolerance(1e-14));
-  BOOST_TEST(
-      ini_volume_fields(3, 1) == 7.438566190284294, tt::tolerance(1e-14));
+  BOOST_TEST(ini_volume_fields(0, 1) == -7.448179281084415);
+  BOOST_TEST(ini_volume_fields(1, 1) == -3.682489439168079);
+  BOOST_TEST(ini_volume_fields(2, 1) == 2.975065528375442);
+  BOOST_TEST(ini_volume_fields(3, 1) == 7.438566190284294);
 
-  BOOST_TEST(
-      ini_volume_fields(0, 2) == 7.308717012932643, tt::tolerance(1e-14));
-  BOOST_TEST(
-      ini_volume_fields(1, 2) == 4.316208298798116, tt::tolerance(1e-14));
-  BOOST_TEST(
-      ini_volume_fields(2, 2) == -2.208095660804580, tt::tolerance(1e-14));
-  BOOST_TEST(
-      ini_volume_fields(3, 2) == -7.280070146609996, tt::tolerance(1e-14));
+  BOOST_TEST(ini_volume_fields(0, 2) == 7.308717012932643);
+  BOOST_TEST(ini_volume_fields(1, 2) == 4.316208298798116);
+  BOOST_TEST(ini_volume_fields(2, 2) == -2.208095660804580);
+  BOOST_TEST(ini_volume_fields(3, 2) == -7.280070146609996);
 }
 
-BOOST_AUTO_TEST_CASE(initial_surface_fields, *utf::tolerance(1e-16)) {
+BOOST_AUTO_TEST_CASE(initial_surface_fields, *utf::tolerance(5e-15)) {
   // Tested against LIFT*(Fscale.*(du)) in AdvecRHS1D.m
   const arma::mat coords(dgtd.get_phys_node_coords());
   const arma::mat ini_vals(advection.get_initial_values(coords));
+  const double time(0.);
   const std::vector<double> geo_factors(dgtd.get_geometric_factors());
   const arma::mat lift_matrix(
       Elementwise_operations<Legendre_basis>(polynomial_order)
           .get_lift_matrix());
-  const double time(0.);
-  const arma::mat ini_surface_fields(advection.get_surface_fields(
-      ini_vals, time, geo_factors, lift_matrix, upwind_param));
 
-  BOOST_TEST(
-      ini_surface_fields(0, 0) == 4.728976859684387, tt::tolerance(1e-15));
-  BOOST_TEST(
-      ini_surface_fields(1, 0) == -0.528715686113889,
-      tt::tolerance(1e-15));
-  BOOST_TEST(
-      ini_surface_fields(2, 0) == 0.528715686113889, tt::tolerance(1e-15));
-  BOOST_TEST(
-      ini_surface_fields(3, 0) == -1.182244214921098,
-      tt::tolerance(1e-15));
+  double upwind_param(0.);
+  const arma::mat central_surface_fields(advection.get_surface_fields(
+        ini_vals, time, geo_factors, lift_matrix, upwind_param));
+  BOOST_TEST(central_surface_fields(0,0) == 2.364488429842194);
+  BOOST_TEST(central_surface_fields(1,0) == -0.264357843056945);
+  BOOST_TEST(central_surface_fields(2,0) == 0.264357843056944);
+  BOOST_TEST(central_surface_fields(3,0) == -0.591122107460549);
 
-  for (size_t col(1); col < 3; ++col) {
-    for (size_t row(0); row < 4; ++row) {
-      BOOST_TEST(ini_surface_fields(row, col) == 0);
-    }
-  }
+  upwind_param = 1.;
+   const arma::mat upwind_surface_fields(advection.get_surface_fields(
+        ini_vals, time, geo_factors, lift_matrix, upwind_param)); 
+  BOOST_TEST(upwind_surface_fields(0,0) == 4.728976859684387);
+  BOOST_TEST(upwind_surface_fields(1,0) == -0.528715686113889);
+  BOOST_TEST(upwind_surface_fields(2,0) == 0.528715686113889);
+  BOOST_TEST(upwind_surface_fields(3,0) == -1.182244214921098);
 }
 
-BOOST_AUTO_TEST_CASE(initial_spatial_scheme, *utf::tolerance(1e-16)) {
+/*
+BOOST_AUTO_TEST_CASE(evolved_volume_fields, *utf::tolerance(1e-16)) {
+  // Tested against -a*rx.*(Dr*u) in AdvecRHS1D.m
+  const arma::mat coords(dgtd.get_phys_node_coords());
+  const arma::mat ini_vals(advection.get_initial_values(coords));
+  const std::vector<double> geo_factors(dgtd.get_geometric_factors());
+  const arma::mat diff_matrix(
+      Elementwise_operations<Legendre_basis>(polynomial_order)
+          .get_diff_matrix());
+  const arma::mat ini__volume_fields(
+      advection.get_volume_fields(ini_vals, geo_factors, diff_matrix));
+  const arma::mat evolved_volume_fields;
+}
+*/
+
+/*
+BOOST_AUTO_TEST_CASE(initial_spatial_scheme, *utf::tolerance(1e-15)) {
   // Tested against rhsu in AdvecRHS1D.m
   const arma::mat coords(dgtd.get_phys_node_coords());
   const arma::mat ini_vals(advection.get_initial_values(coords));
@@ -204,9 +216,10 @@ BOOST_AUTO_TEST_CASE(initial_spatial_scheme, *utf::tolerance(1e-16)) {
       ini_spatial_scheme(3, 2) == -7.280070146609996,
       tt::tolerance(1e-14));
 }
+*/
 
 /*
-BOOST_AUTO_TEST_CASE(solution) { 
+BOOST_AUTO_TEST_CASE(solution) {
   std::cout.precision(15);
   dgtd.get_solution(advection, 4, 5).raw_print(std::cout, "solution"); }
   */

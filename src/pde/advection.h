@@ -16,13 +16,6 @@ class Advection: public Pde{
     arma::mat get_initial_values(
       const arma::mat &phys_node_coords) const override;
 
-    arma::mat get_surface_fields(
-      const arma::mat &fields,
-      const double time,
-      const std::vector<double> &geometric_factors,
-      const arma::mat &lift_matrix,
-      const double upwind_param) const override;
-
     inline double get_volume_flux_prefactor() const override {
       return flux_prefactor;
     };

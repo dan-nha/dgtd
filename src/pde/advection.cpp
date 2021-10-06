@@ -18,36 +18,13 @@ arma::mat Advection::get_initial_values(
   return initial_values;
 }
 //------------------------------------------------------------------------
-arma::mat Advection::get_surface_fields(
-      const arma::mat &fields,
-      const double time,
-      const std::vector<double> &geometric_factors,
-      const arma::mat &lift_matrix,
-      const double upwind_param) const {
-
-  std::tuple<double, double> boundary_conditions(
-      this->get_boundary_conditions(fields, time));
-  std::vector<std::tuple<double, double>> field_jumps(
-      Pde::get_field_jumps(fields, boundary_conditions));
-
-  const size_t num_elems(fields.n_cols);
-  std::vector<std::tuple<double, double>> surface_flux_prefactors(
-      this->get_surface_flux_prefactors(num_elems));
-
-  return get_lifted_jumps(
-      field_jumps,
-      surface_flux_prefactors,
-      lift_matrix,
-      geometric_factors,
-      upwind_param);
-}
-//------------------------------------------------------------------------
 std::vector<std::tuple<double, double>> 
 Advection::get_surface_flux_prefactors(const size_t num_elems) const {
   
   std::vector<std::tuple<double, double>> prefactors;
   for (size_t elem(0); elem<num_elems; ++elem) {
-    prefactors.push_back({this->flux_prefactor, this->flux_prefactor});
+    prefactors.push_back(
+        {0.5*this->flux_prefactor, 0.5*this->flux_prefactor});
   }
 
   return prefactors;

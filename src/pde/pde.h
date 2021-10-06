@@ -93,7 +93,7 @@ public:
       const double time,
       const std::vector<double> &geometric_factors,
       const arma::mat &lift_matrix,
-      const double upwind_param) const = 0;
+      const double upwind_param) const;
  
   inline arma::mat
   get_flux(const arma::mat &fields, const double flux_prefactor) const {

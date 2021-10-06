@@ -4,8 +4,10 @@
 #include "temporal_solver/low_storage_runge_kutta.h"
 #include "tools/custom_errors.h"
 #include "tools/output.h"
+#include "tools/get.h"
 
 #include <typeinfo>
+#include <iomanip>
 
 namespace DGTD {
 using namespace DG;
@@ -29,6 +31,7 @@ Dgtd_solver<Pde, Basis, TD_solver>::Dgtd_solver(
                       .get_diff_matrix()),
       lift_matrix(Elementwise_operations<Basis>(_polynomial_order)
                       .get_lift_matrix()) {
+
   if (!std::is_same<TD_solver, Low_storage_runge_kutta>::value) {
     throw Not_implemented("Given time-domain solver unknown.");
   }
@@ -53,27 +56,20 @@ arma::mat Dgtd_solver<Pde, Basis, TD_solver>::get_solution(
   
   const std::vector<double> geo_factors(this->get_geometric_factors());
 
+  arma::mat interim_res(fields.n_rows, fields.n_cols, arma::fill::zeros);
   for (double time(0.); time <= end_time; time += this->time_step) {
+    output.store_time(time);
+    output.store_fields("Advection", fields);
     auto dg_scheme =
-        [&pde, this, &fields, &time, &runge_kutta_stages, &geo_factors]
-        (const arma::mat u, const double t) {
+        [pde, this, geo_factors] (arma::mat u, double t) {
           return pde.get_spatial_scheme(
-              fields,
-              time,
+              u,
+              t,
               geo_factors,
               this->diff_matrix,
               this->lift_matrix,
               this->upwind_param);
         };
-    /*
-    pde.get_spatial_scheme(
-        fields,
-        time,
-        geo_factors,
-        this->diff_matrix,
-        this->lift_matrix,
-        this->upwind_param).raw_print(std::cout, "rhs");
-        */
     fields = lsrk.evolve_in_time(
         dg_scheme,
         time,
@@ -83,8 +79,6 @@ arma::mat Dgtd_solver<Pde, Basis, TD_solver>::get_solution(
         butcher_coeff3,
         runge_kutta_stages,
         fields);
-    output.store_time(time);
-    output.store_fields("Advection", fields);
   }
   return fields;
 }

@@ -24,14 +24,17 @@ int main(int argc, char* argv[]) {
   stream_welcome_message();
 
   Mesh::Check_mesh check_mesh(argv[1]);
-  const size_t polynomial_order(10);
-  const double end_time(100);
+  
+  const size_t polynomial_order(20);
+  const double end_time(1);
+  //const size_t polynomial_order(3);
+  //const double end_time(0.1);
   const double dt_factor(0.75 * 0.5);
-  const double upwind_param(1.);
+  const double upwind_param(0.);
 
   DGTD::Dgtd_solver<Advection, DG::Legendre_basis, TD::Low_storage_runge_kutta>
     dgtd(argv[1], polynomial_order, end_time, dt_factor, upwind_param);
-  Advection advection(2 * M_PI);
+  Advection advection(2*M_PI);
   dgtd.get_solution(advection, 4, 5);
 }
 
