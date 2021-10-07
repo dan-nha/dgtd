@@ -52,12 +52,25 @@ arma::mat Pde::get_surface_fields(
   std::vector<std::tuple<double, double>> surface_flux_prefactors(
       this->get_surface_flux_prefactors(num_elems));
 
-  return get_lifted_jumps(
+  arma::mat surface_fields(
+      get_lifted_jumps(
       field_jumps,
       surface_flux_prefactors,
       lift_matrix,
       geometric_factors,
-      upwind_param);
+      0.));
+
+  if (upwind_param!=0) {
+    surface_fields +=
+      get_lifted_jumps(
+          field_jumps,
+          surface_flux_prefactors,
+          lift_matrix,
+          geometric_factors,
+          upwind_param);
+  }
+
+  return surface_fields;
 }
 //-------------------------------------------------------------------------
 std::vector<std::tuple<double, double>> Pde::get_field_jumps(
