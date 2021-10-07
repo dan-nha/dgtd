@@ -18,10 +18,15 @@ public:
       Pde pde,
       const size_t runge_kutta_order, 
       const size_t runge_kutta_stages) const;
+
   arma::mat get_phys_node_coords() const;
+ 
   std::vector<double> get_geometric_factors() const;
+  
   double get_time_step();
+  
   double get_min_node_dist();
+  
   bool is_field_name_valid(const std::string &field_name) const;
 
 private:

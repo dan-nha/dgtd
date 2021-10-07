@@ -45,8 +45,8 @@ arma::mat Dgtd_solver<Pde, Basis, TD_solver>::get_solution(
 
   const arma::mat phys_node_coords(this->get_phys_node_coords());
 
-  Output output;
-  output.store_coords(phys_node_coords);
+  Output out;
+  out.store_coords(phys_node_coords);
 
   arma::mat fields(pde.get_initial_values(phys_node_coords));
 
@@ -58,8 +58,8 @@ arma::mat Dgtd_solver<Pde, Basis, TD_solver>::get_solution(
 
   arma::mat interim_res(fields.n_rows, fields.n_cols, arma::fill::zeros);
   for (double time(0.); time <= end_time; time += this->time_step) {
-    output.store_time(time);
-    output.store_fields("Advection", fields);
+    out.store_time(time);
+    out.store_fields("Advection", fields);
     auto dg_scheme =
         [pde, this, geo_factors] (arma::mat u, double t) {
           return pde.get_spatial_scheme(

@@ -7,21 +7,16 @@ coords = np.load('coordinates.npy')
 times  =np.load('times.npy')
 
 fig, ax = plt.subplots(figsize=(5, 3))
-ax.set(xlim=(-3, 6), ylim=(-2, 2))
+ax.set(xlim=(0, 9), ylim=(-1.5, 1.5))
 
-def animate(i):
-    ax.set_title('Frame %i' %i)
+for i in range(len(times)-1):
+    ax.clear()        
+
     plt.plot(coords[0,:], field[i,0,:])
     plt.plot(coords[1,:], field[i,1,:])
     plt.plot(coords[2,:], field[i,2,:])
 
-anim = FuncAnimation(
-    fig, 
-    animate, 
-    interval=300, 
-    frames=len(times)-1,
-    repeat=False
-    )
+    plt.pause(0.01)
 
-plt.draw()
 plt.show()
+plt.clf() 
