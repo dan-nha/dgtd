@@ -72,13 +72,13 @@ arma::mat Dgtd_solver<Pde, Basis, TD_solver>::get_solution(
         };
     fields = lsrk.evolve_in_time(
         dg_scheme,
+        fields,
         time,
         this->time_step,
         butcher_coeff1,
         butcher_coeff2,
         butcher_coeff3,
-        runge_kutta_stages,
-        fields);
+        runge_kutta_stages);
   }
   return fields;
 }
@@ -148,7 +148,7 @@ bool Dgtd_solver<Pde, Basis, TD_solver>::is_field_name_valid(
     const std::string &field_name) const {
 
   const auto field_names(Pde::get_field_names());
-  if (field_names.find(field_name) != field_names.end()) {
+  if (field_names.map(field_name)) {
     return true;
   } else {
     return false;

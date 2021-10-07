@@ -21,6 +21,7 @@ public:
 
   arma::mat get_phys_node_coords() const;
  
+  // Get geometric factors for all elements
   std::vector<double> get_geometric_factors() const;
   
   double get_time_step();

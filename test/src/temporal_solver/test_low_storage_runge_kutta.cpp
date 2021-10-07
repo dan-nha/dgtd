@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(evolve_in_time, *utf::tolerance(1e-16)) {
   const arma::mat ini_vals({0});
 
   const arma::mat first_evolution = lsrk_solver.evolve_in_time(
-      test_odes, time, dt, a, b, c, num_stages, ini_vals);
+      test_odes, ini_vals, time, dt, a, b, c, num_stages);
 
   BOOST_TEST(
       first_evolution.front() == 0.021330398714844, tt::tolerance(1e-13));
