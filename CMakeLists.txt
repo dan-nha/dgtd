@@ -25,7 +25,7 @@ set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_MULTITHREADED ON)  
 set(Boost_USE_STATIC_RUNTIME OFF)
 ADD_DEFINITIONS(-DBOOST_LOG_DYN_LINK)
-find_package(Boost COMPONENTS log unit_test_framework REQUIRED)
+find_package(Boost COMPONENTS log unit_test_framework program_options REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS}) 
 
 # use armadillo without runtimelibrary, wrap blas and lapack
