@@ -8,14 +8,13 @@ arma::mat Pde::get_spatial_scheme(
     const double time,
     const std::vector<double> &geometric_factors,
     const arma::mat &diff_matrix,
-    const arma::mat &lift_matrix,
-    const double upwind_param) const {
+    const arma::mat &lift_matrix) const {
 
   const arma::mat volume_fields(
       this->get_volume_fields(fields, geometric_factors, diff_matrix));
 
   const arma::mat surface_fields(this->get_surface_fields(
-      fields, time, geometric_factors, lift_matrix, upwind_param));
+      fields, time, geometric_factors, lift_matrix));
 
   return volume_fields + surface_fields;
 }
@@ -40,8 +39,7 @@ arma::mat Pde::get_surface_fields(
     const arma::mat &fields,
     const double time,
     const std::vector<double> &geometric_factors,
-    const arma::mat &lift_matrix,
-    const double upwind_param) const {
+    const arma::mat &lift_matrix) const {
 
   std::tuple<double, double> boundary_conditions(
       this->get_boundary_conditions(fields, time));
@@ -52,22 +50,23 @@ arma::mat Pde::get_surface_fields(
   std::vector<std::tuple<double, double>> surface_flux_prefactors(
       this->get_surface_flux_prefactors(num_elems));
 
-  arma::mat surface_fields(
-      get_lifted_jumps(
+  // central flux
+  arma::mat surface_fields(get_lifted_jumps(
       field_jumps,
       surface_flux_prefactors,
       lift_matrix,
       geometric_factors,
       0.));
 
-  if (upwind_param!=0) {
-    surface_fields +=
-      get_lifted_jumps(
-          field_jumps,
-          surface_flux_prefactors,
-          lift_matrix,
-          geometric_factors,
-          upwind_param);
+  // uwpinding
+  const double upwind_param(this->get_upwind_param());
+  if (upwind_param != 0) {
+    surface_fields += get_lifted_jumps(
+        field_jumps,
+        surface_flux_prefactors,
+        lift_matrix,
+        geometric_factors,
+        upwind_param);
   }
 
   return surface_fields;

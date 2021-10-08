@@ -35,8 +35,7 @@ public:
       const double time,
       const std::vector<double> &geometric_factors,
       const arma::mat &diff_matrix,
-      const arma::mat &lift_matrix,
-      const double upwind_param=0) const;
+      const arma::mat &lift_matrix) const;
 
   /**
    * @brief Calculate the volume field, i.e.
@@ -92,8 +91,7 @@ public:
       const arma::mat &fields,
       const double time,
       const std::vector<double> &geometric_factors,
-      const arma::mat &lift_matrix,
-      const double upwind_param) const;
+      const arma::mat &lift_matrix) const;
  
   inline arma::mat
   get_flux(const arma::mat &fields, const double flux_prefactor) const {
@@ -130,6 +128,7 @@ public:
   virtual double get_volume_flux_prefactor() const = 0;
   virtual std::vector<std::tuple<double, double>>
     get_surface_flux_prefactors(const size_t num_elems) const = 0;
+  virtual double get_upwind_param() const = 0;
   virtual std::list<std::string> get_field_names() const = 0;
 };
 #endif

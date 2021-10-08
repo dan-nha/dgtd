@@ -18,15 +18,13 @@ Dgtd_solver<Pde, Basis, TD_solver>::Dgtd_solver(
     const std::string &_mesh_name,
     const size_t _polynomial_order,
     const double _end_time,
-    const double _dt_factor,
-    const double _upwind_param)
+    const double _dt_factor)
     : mesh_name(_mesh_name), 
       polynomial_order(_polynomial_order),
       quad_nodes(basis.get_quad_nodes(_polynomial_order)),
       end_time(_end_time), 
       dt_factor(_dt_factor),
       time_step(this->get_time_step()),
-      upwind_param(_upwind_param),
       diff_matrix(Elementwise_operations<Basis>(_polynomial_order)
                       .get_diff_matrix()),
       lift_matrix(Elementwise_operations<Basis>(_polynomial_order)
@@ -67,8 +65,7 @@ arma::mat Dgtd_solver<Pde, Basis, TD_solver>::get_solution(
               t,
               geo_factors,
               this->diff_matrix,
-              this->lift_matrix,
-              this->upwind_param);
+              this->lift_matrix);
         };
     fields = lsrk.evolve_in_time(
         dg_scheme,

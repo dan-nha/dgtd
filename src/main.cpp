@@ -39,11 +39,10 @@ int main(int argc, char *argv[]) {
             argv[1],
             input.polynomial_order,
             input.end_time,
-            input.dt_factor,
-            input.upwind_param);
+            input.dt_factor);
 
-    Advection advection(input.material_params.front());
-    
+    Advection advection(input.material_params.front(), input.upwind_param);
+
     dgtd.get_solution(
         advection, input.runge_kutta_order, input.runge_kutta_stages);
   }

@@ -7,7 +7,8 @@ namespace tt = boost::test_tools;
 
 BOOST_AUTO_TEST_SUITE(advection);
 
-Advection advection(2*M_PI);
+const double upwind_param(1.);
+Advection advection(2*M_PI, upwind_param);
 
 BOOST_AUTO_TEST_CASE(boundary_conditions1) {
   const arma::mat fields({{1,2,3}});

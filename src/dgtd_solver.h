@@ -11,8 +11,7 @@ public:
       const std::string &mesh_name,
       const size_t polynomial_order,
       const double end_time,
-      const double dt_factor,
-      const double upwind_param);
+      const double dt_factor);
 
   arma::mat get_solution(
       Pde pde,
@@ -38,7 +37,6 @@ private:
   const double end_time;
   const double dt_factor;
   const double time_step;
-  const double upwind_param;
   const arma::mat diff_matrix;
   const arma::mat lift_matrix;
 };

@@ -32,12 +32,12 @@ const std::string
 const size_t polynomial_order(3);
 const double end_time(0.1);
 const double dt_factor(0.75 * 0.5);
-const double upwind_param(1.);
 
 Dgtd_solver<Advection, Legendre_basis, Low_storage_runge_kutta>
-    dgtd(mesh, polynomial_order, end_time, dt_factor, upwind_param);
+    dgtd(mesh, polynomial_order, end_time, dt_factor);
 
-Advection advection(2 * M_PI);
+const double upwind_param(1.);
+Advection advection(2*M_PI, upwind_param);
 
 BOOST_AUTO_TEST_CASE(phys_node_coords, *utf::tolerance(1e-15)) {
   const arma::mat coords(dgtd.get_phys_node_coords());
@@ -113,8 +113,7 @@ BOOST_AUTO_TEST_CASE(initial_spatial_scheme, *utf::tolerance(1e-14)) {
       time,
       geo_factors,
       diff_matrix,
-      lift_matrix,
-      upwind_param));
+      lift_matrix));
 
   BOOST_TEST(spatial_scheme(0, 0) == -7.448179281084415);
   BOOST_TEST(spatial_scheme(1, 0) == -3.682489439168079);
