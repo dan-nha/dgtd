@@ -1,0 +1,15 @@
+{
+  "regions":[{
+    "name": "the_only_region",
+    "pde": "advection",
+    "parameters":[{
+        "advection_speed": 6.283185307179586,
+        "upwind_param": 1
+      }],
+    "polynomial_order": 3,
+    "runge_kutta_order": 4,
+    "runge_kutta_stages": 5,
+    "dt_factor": 0.375
+  }],
+  "end_time": 0.1
+}

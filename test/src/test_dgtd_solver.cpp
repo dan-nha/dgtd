@@ -3,7 +3,7 @@
 #include "../../src/spatial_solver/basis_functions/legendre_basis.h"
 #include "../../src/spatial_solver/elementwise_operations.h"
 #include "../../src/temporal_solver/low_storage_runge_kutta.h"
-#include "../../src/tools/output.h"
+#include "../../src/tools/input.h"
 
 #include <boost/test/unit_test.hpp>
 
@@ -29,12 +29,12 @@ BOOST_AUTO_TEST_SUITE(dgtd_solver);
 const std::string root_dir(DGTD_ROOT);
 const std::string
     mesh(root_dir + "/test/examples/advection/three_elems.msh");
-const size_t polynomial_order(3);
-const double end_time(0.1);
-const double dt_factor(0.75 * 0.5);
+const std::string
+    config(root_dir + "/test/examples/test_dgtd.json");
+Input input(config);
 
 Dgtd_solver<Advection, Legendre_basis, Low_storage_runge_kutta>
-    dgtd(mesh, polynomial_order, end_time, dt_factor);
+    dgtd(mesh, input);
 
 const double upwind_param(1.);
 Advection advection(2*M_PI, upwind_param);
@@ -102,10 +102,10 @@ BOOST_AUTO_TEST_CASE(initial_spatial_scheme, *utf::tolerance(1e-14)) {
   const arma::mat ini_vals(advection.get_initial_values(coords));
   const std::vector<double> geo_factors(dgtd.get_geometric_factors());
   const arma::mat lift_matrix(
-      Elementwise_operations<Legendre_basis>(polynomial_order)
+      Elementwise_operations<Legendre_basis>(input.polynomial_order)
           .get_lift_matrix());
   const arma::mat diff_matrix(
-      Elementwise_operations<Legendre_basis>(polynomial_order)
+      Elementwise_operations<Legendre_basis>(input.polynomial_order)
           .get_diff_matrix());
   const double time(0.);
   const arma::mat spatial_scheme(advection.get_spatial_scheme(

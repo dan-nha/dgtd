@@ -1,37 +1,33 @@
 #ifndef DGTD_SOLVER_H
 #define DGTD_SOLVER_H
 
-#include <string>
-#include <armadillo>
+#include "tools/input.h"
 
-namespace DGTD{
+#include <armadillo>
+#include <string>
+
+namespace DGTD {
 template <class Pde, class Basis, class TD_solver> class Dgtd_solver {
 public:
-  Dgtd_solver(
-      const std::string &mesh_name,
-      const size_t polynomial_order,
-      const double end_time,
-      const double dt_factor);
+  Dgtd_solver(const std::string &mesh_name, Input input);
 
-  arma::mat get_solution(
-      Pde pde,
-      const size_t runge_kutta_order, 
-      const size_t runge_kutta_stages) const;
+  arma::mat get_solution(Pde pde) const;
 
   arma::mat get_phys_node_coords() const;
- 
+
   // Get geometric factors for all elements
   std::vector<double> get_geometric_factors() const;
-  
+
   double get_time_step();
-  
+
   double get_min_node_dist();
-  
+
   bool is_field_name_valid(const std::string &field_name) const;
 
 private:
-  Basis basis;
   const std::string mesh_name;
+  Input input;
+  Basis basis;
   const size_t polynomial_order;
   std::vector<double> quad_nodes;
   const double end_time;

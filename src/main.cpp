@@ -35,15 +35,10 @@ int main(int argc, char *argv[]) {
         Advection,
         DG::Legendre_basis,
         TD::Low_storage_runge_kutta>
-        dgtd(
-            argv[1],
-            input.polynomial_order,
-            input.end_time,
-            input.dt_factor);
+        dgtd(argv[1], input);
 
     Advection advection(input.material_params.front(), input.upwind_param);
 
-    dgtd.get_solution(
-        advection, input.runge_kutta_order, input.runge_kutta_stages);
+    dgtd.get_solution(advection);
   }
 }

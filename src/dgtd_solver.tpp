@@ -16,18 +16,17 @@ using namespace TD;
 template <class Pde, class Basis, class TD_solver>
 Dgtd_solver<Pde, Basis, TD_solver>::Dgtd_solver(
     const std::string &_mesh_name,
-    const size_t _polynomial_order,
-    const double _end_time,
-    const double _dt_factor)
+    Input _input)
     : mesh_name(_mesh_name), 
-      polynomial_order(_polynomial_order),
-      quad_nodes(basis.get_quad_nodes(_polynomial_order)),
-      end_time(_end_time), 
-      dt_factor(_dt_factor),
+      input(_input),
+      polynomial_order(_input.polynomial_order),
+      quad_nodes(basis.get_quad_nodes(_input.polynomial_order)),
+      end_time(_input.end_time), 
+      dt_factor(_input.dt_factor),
       time_step(this->get_time_step()),
-      diff_matrix(Elementwise_operations<Basis>(_polynomial_order)
+      diff_matrix(Elementwise_operations<Basis>(_input.polynomial_order)
                       .get_diff_matrix()),
-      lift_matrix(Elementwise_operations<Basis>(_polynomial_order)
+      lift_matrix(Elementwise_operations<Basis>(_input.polynomial_order)
                       .get_lift_matrix()) {
 
   if (!std::is_same<TD_solver, Low_storage_runge_kutta>::value) {
@@ -36,10 +35,7 @@ Dgtd_solver<Pde, Basis, TD_solver>::Dgtd_solver(
 }
 //-------------------------------------------------------------------------
 template <class Pde, class Basis, class TD_solver>
-arma::mat Dgtd_solver<Pde, Basis, TD_solver>::get_solution(
-    Pde pde,
-    const size_t runge_kutta_order, 
-    const size_t runge_kutta_stages) const {
+arma::mat Dgtd_solver<Pde, Basis, TD_solver>::get_solution(Pde pde) const {
 
   const arma::mat phys_node_coords(this->get_phys_node_coords());
 
@@ -50,7 +46,8 @@ arma::mat Dgtd_solver<Pde, Basis, TD_solver>::get_solution(
 
   TD_solver lsrk;
   const auto [butcher_coeff1, butcher_coeff2, butcher_coeff3] =
-      lsrk.get_butcher_coeffs(runge_kutta_order, runge_kutta_stages);
+      lsrk.get_butcher_coeffs(
+          this->input.runge_kutta_order, this->input.runge_kutta_stages);
   
   const std::vector<double> geo_factors(this->get_geometric_factors());
 
@@ -75,7 +72,7 @@ arma::mat Dgtd_solver<Pde, Basis, TD_solver>::get_solution(
         butcher_coeff1,
         butcher_coeff2,
         butcher_coeff3,
-        runge_kutta_stages);
+        this->input.runge_kutta_stages);
   }
   return fields;
 }
