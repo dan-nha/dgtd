@@ -51,7 +51,7 @@ std::vector<size_t> Process_mesh_data::get_ordered_regions() {
   std::map<size_t, size_t> first_elem_to_region;
 
   std::vector regions(Import_mesh_data::import_gmsh_regions());
-  for (const auto region: regions) {
+  for (const auto region : regions) {
     const size_t first_elem(
         this->get_ordered_elems(this->get_finite_elems(region)).front());
     first_elems.push_back(first_elem);
@@ -61,15 +61,15 @@ std::vector<size_t> Process_mesh_data::get_ordered_regions() {
   std::vector<size_t> ordered_regions;
   std::vector<size_t> ordered_first_elems(
       this->get_ordered_elems(first_elems));
-  for (const auto elem: ordered_first_elems) {
+  for (const auto elem : ordered_first_elems) {
     ordered_regions.push_back(first_elem_to_region[elem]);
   }
 
   return ordered_regions;
 }
 //-------------------------------------------------------------------------
-std::vector<size_t>
-Process_mesh_data::get_ordered_elems(const std::vector<size_t> elem_tags) {
+std::vector<size_t> Process_mesh_data::get_ordered_elems(
+    const std::vector<size_t> &elem_tags) {
 
   std::vector<size_t> ordered_elem_tags;
   std::map<double, size_t> coord_elemtag_map;

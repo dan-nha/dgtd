@@ -24,12 +24,13 @@ class Input {
         runge_kutta_stages =
         region_params.get<size_t>("runge_kutta_stages");
         dt_factor = region_params.get<double>("dt_factor");
-        upwind_param = region_params.get<double>("upwind_param");
 
         if (pde_name == "advection") {
           for (auto &&param_tree : region_params.get_child("parameters")) {
             const pt::ptree &pde_params = param_tree.second;
-            advection_speed = pde_params.get<double>("advection_speed");
+            material_params.push_back(
+                pde_params.get<double>("advection_speed"));
+            upwind_param = pde_params.get<double>("upwind_param");
           }
         }
       }
@@ -42,7 +43,7 @@ class Input {
     double dt_factor;
     double end_time;
     double upwind_param;
-    double advection_speed;
+    std::vector<double> material_params;
 };
 
 #endif

@@ -42,7 +42,7 @@ public:
    * neighboring regions, i.e. the region ordering from left to right.
    */
   std::vector<size_t>
-  get_ordered_elems(const std::vector<size_t> elem_tags);
+  get_ordered_elems(const std::vector<size_t> &elem_tags);
 
   /**
    * @brief The element size is needed to convert physical coordinate

@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
             input.dt_factor,
             input.upwind_param);
 
-    Advection advection(input.advection_speed);
+    Advection advection(input.material_params.front());
     
     dgtd.get_solution(
         advection, input.runge_kutta_order, input.runge_kutta_stages);
