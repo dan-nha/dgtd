@@ -20,11 +20,6 @@ arma::mat Low_storage_runge_kutta::evolve_in_time(
   for (size_t stage(0); stage < num_stages; ++stage) {
     const double interim_time(time + dt * butcher_coeff3[stage]);
 
-    /*
-    std::cout.precision(15);
-    std::cout << interim_time << std::endl;
-    solution.raw_print(std::cout, "solution");
-    */
     interim_result *= butcher_coeff1[stage];
     interim_result += dt * pde(solution, interim_time);
     solution += butcher_coeff2[stage] * interim_result;

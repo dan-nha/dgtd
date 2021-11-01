@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
-field  = np.load('Advection.npy')
+field  = np.load('advection.npy')
 coords = np.load('coordinates.npy')
 times  =np.load('times.npy')
 
