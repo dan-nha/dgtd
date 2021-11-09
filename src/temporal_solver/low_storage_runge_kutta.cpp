@@ -5,7 +5,7 @@
 namespace TD {
 arma::mat Low_storage_runge_kutta::evolve_in_time(
     const std::function<arma::mat(arma::mat u, double t)> &pde,
-    const arma::mat initial_values,
+    const arma::mat &initial_values,
     const double time,
     const double dt,
     const std::vector<double> &butcher_coeff1,
