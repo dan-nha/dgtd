@@ -9,7 +9,9 @@ namespace tt = boost::test_tools;
 namespace TD {
 
 BOOST_AUTO_TEST_SUITE(runge_kutta);
-Low_storage_runge_kutta lsrk_solver;
+const size_t order(4);
+const size_t num_stages(5);
+Low_storage_runge_kutta lsrk_solver(order, num_stages);
 /**
  * Reference values taken from Matlab nodal DGTD code by Hesthaven
  * and Warburton \cite hesthaven2008nodal (e.g. Advec1D.m, Maxwell1D.m)
@@ -19,7 +21,7 @@ Low_storage_runge_kutta lsrk_solver;
 //-------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(get_butcher_coeffs, *utf::tolerance(1e-16)) {
 
-  auto [a, b, c] = lsrk_solver.get_butcher_coeffs(4, 5);
+  auto [a, b, c] = lsrk_solver.get_butcher_coeffs(order, num_stages);
   BOOST_TEST(a[0] == 0.);
   BOOST_TEST(a[1] == -0.417890474499852, tt::tolerance(1e-15));
   BOOST_TEST(a[2] == -1.192151694642677, tt::tolerance(1e-15));
@@ -53,14 +55,12 @@ BOOST_AUTO_TEST_CASE(evolve_in_time, *utf::tolerance(1e-16)) {
     }
     return odes;
   };
-  const size_t num_stages(5);
-  const auto [a, b, c] = lsrk_solver.get_butcher_coeffs(4, num_stages);
   const double time(7.);
   const double dt(0.1);
   const arma::mat ini_vals({0});
 
-  const arma::mat first_evolution = lsrk_solver.evolve_in_time(
-      test_odes, ini_vals, time, dt, a, b, c, num_stages);
+  const arma::mat first_evolution = 
+    lsrk_solver.evolve_in_time(test_odes, ini_vals, time, dt);
 
   BOOST_TEST(
       first_evolution.front() == 0.021330398714844, tt::tolerance(1e-13));

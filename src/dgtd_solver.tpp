@@ -44,10 +44,9 @@ arma::mat Dgtd_solver<Pde, Basis, TD_solver>::get_solution(Pde pde) const {
 
   arma::mat fields(pde.get_initial_values(phys_node_coords));
 
-  TD_solver lsrk;
-  const auto [butcher_coeff1, butcher_coeff2, butcher_coeff3] =
-      lsrk.get_butcher_coeffs(
-          this->input.runge_kutta_order, this->input.runge_kutta_stages);
+
+  TD_solver lsrk(
+      this->input.runge_kutta_order, this->input.runge_kutta_stages);
   
   const std::vector<double> geo_factors(this->get_geometric_factors());
 
@@ -68,11 +67,7 @@ arma::mat Dgtd_solver<Pde, Basis, TD_solver>::get_solution(Pde pde) const {
         dg_scheme,
         fields,
         time,
-        this->time_step,
-        butcher_coeff1,
-        butcher_coeff2,
-        butcher_coeff3,
-        this->input.runge_kutta_stages);
+        this->time_step);
   }
   return fields;
 }
