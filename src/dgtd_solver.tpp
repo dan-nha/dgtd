@@ -54,7 +54,7 @@ arma::mat Dgtd_solver<Pde, Basis, TD_solver>::get_solution(Pde pde) const {
   arma::mat interim_res(fields.n_rows, fields.n_cols, arma::fill::zeros);
   for (double time(0.); time <= end_time; time += this->time_step) {
     out.store_time(time);
-    out.store_fields("Advection", fields);
+    out.store_fields("advection", fields);
     auto dg_scheme =
         [pde, this, geo_factors] (arma::mat u, double t) {
           return pde.get_spatial_scheme(

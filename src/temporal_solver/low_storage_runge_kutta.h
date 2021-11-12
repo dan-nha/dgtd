@@ -14,7 +14,7 @@ public:
 
   arma::mat evolve_in_time(
       const std::function<arma::mat(arma::mat u, double t)> &ode,
-      const arma::mat initial_values,
+      const arma::mat &initial_values,
       const double time,
       const double dt,
       const std::vector<double> &butcher_coeff1,
