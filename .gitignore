@@ -24,5 +24,6 @@
 
 # Folders
 build
+bin
 doc/doxygen
 lib/internal

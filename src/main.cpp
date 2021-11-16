@@ -1,3 +1,4 @@
+#define BOOST_BIND_GLOBAL_PLACEHOLDERS
 #include "dgtd_solver.h"
 #include "pde/advection.h"
 #include "spatial_solver/basis_functions/legendre_basis.h"

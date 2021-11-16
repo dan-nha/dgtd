@@ -1,5 +1,6 @@
 #ifndef INPUT_H
 #define INPUT_H
+#define BOOST_BIND_GLOBAL_PLACEHOLDERS
 
 #include <boost/program_options.hpp>
 #include <boost/property_tree/json_parser.hpp>
