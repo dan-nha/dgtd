@@ -6,7 +6,8 @@
 namespace DG::Mesh {
 
 Process_mesh_data::Process_mesh_data(const std::string &_mesh_name)
-    : Import_mesh_data(_mesh_name), mesh_name(_mesh_name),
+    : Import_mesh_data(_mesh_name), 
+      mesh_name(_mesh_name),
       dimension(Import_mesh_data::get_dimension()) {}
 //-------------------------------------------------------------------------
 std::vector<size_t>

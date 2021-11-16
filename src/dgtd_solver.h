@@ -1,22 +1,26 @@
 #ifndef DGTD_SOLVER_H
 #define DGTD_SOLVER_H
 
+#include "spatial_solver/mesh/process_mesh_data.h"
 #include "tools/input.h"
 
 #include <armadillo>
 #include <string>
 
 namespace DGTD {
+
 template <class Pde, class Basis, class TD_solver> class Dgtd_solver {
 public:
-  Dgtd_solver(const std::string &mesh_name, Input input);
+  Dgtd_solver(const std::string &mesh_name, 
+      DG::Mesh::Process_mesh_data &processed_mesh, 
+      Input &input);
 
-  arma::mat get_solution(Pde pde) const;
+  arma::mat get_solution(Pde pde);
 
-  arma::mat get_phys_node_coords() const;
+  arma::mat get_phys_node_coords();
 
   // Get geometric factors for all elements
-  std::vector<double> get_geometric_factors() const;
+  std::vector<double> get_geometric_factors();
 
   double get_time_step();
 
@@ -26,6 +30,7 @@ public:
 
 private:
   const std::string mesh_name;
+  DG::Mesh::Process_mesh_data processed_mesh;
   Input input;
   Basis basis;
   const size_t polynomial_order;

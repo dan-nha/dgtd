@@ -29,12 +29,13 @@ BOOST_AUTO_TEST_SUITE(dgtd_solver);
 const std::string root_dir(DGTD_ROOT);
 const std::string
     mesh(root_dir + "/test/examples/advection/three_elems.msh");
+Mesh::Process_mesh_data processed_mesh(mesh);
 const std::string
     config(root_dir + "/test/examples/test_dgtd.json");
 Input input(config);
 
 Dgtd_solver<Advection, Legendre_basis, Low_storage_runge_kutta>
-    dgtd(mesh, input);
+    dgtd(mesh, processed_mesh, input);
 
 const double upwind_param(1.);
 Advection advection(2*M_PI, upwind_param);

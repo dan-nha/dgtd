@@ -1,6 +1,5 @@
 #include "spatial_solver/elementwise_operations.h"
 #include "spatial_solver/geometric_operations.h"
-#include "spatial_solver/mesh/process_mesh_data.h"
 #include "temporal_solver/low_storage_runge_kutta.h"
 #include "tools/custom_errors.h"
 #include "tools/output.h"
@@ -16,8 +15,10 @@ using namespace TD;
 template <class Pde, class Basis, class TD_solver>
 Dgtd_solver<Pde, Basis, TD_solver>::Dgtd_solver(
     const std::string &_mesh_name,
-    Input _input)
+    Mesh::Process_mesh_data &_processed_mesh,
+    Input &_input)
     : mesh_name(_mesh_name), 
+      processed_mesh(_processed_mesh),
       input(_input),
       polynomial_order(_input.polynomial_order),
       quad_nodes(basis.get_quad_nodes(_input.polynomial_order)),
@@ -35,7 +36,7 @@ Dgtd_solver<Pde, Basis, TD_solver>::Dgtd_solver(
 }
 //-------------------------------------------------------------------------
 template <class Pde, class Basis, class TD_solver>
-arma::mat Dgtd_solver<Pde, Basis, TD_solver>::get_solution(Pde pde) const {
+arma::mat Dgtd_solver<Pde, Basis, TD_solver>::get_solution(Pde pde) {
 
   const arma::mat phys_node_coords(this->get_phys_node_coords());
 
@@ -74,12 +75,12 @@ arma::mat Dgtd_solver<Pde, Basis, TD_solver>::get_solution(Pde pde) const {
 //-------------------------------------------------------------------------
 template <class Pde, class Basis, class TD_solver>
 std::vector<double> 
-Dgtd_solver<Pde, Basis, TD_solver>::get_geometric_factors() const {
+Dgtd_solver<Pde, Basis, TD_solver>::get_geometric_factors() {
   
-  Mesh::Process_mesh_data pmd(mesh_name);
   std::vector<size_t> elems;
-  for (const auto region : pmd.import_gmsh_regions()) {
-    elems = pmd.get_ordered_elems(pmd.get_finite_elems(region));
+  for (const auto region : processed_mesh.import_gmsh_regions()) {
+    elems = processed_mesh.get_ordered_elems(
+        processed_mesh.get_finite_elems(region));
   }
 
   Geometric_operations go(mesh_name);
@@ -93,12 +94,12 @@ Dgtd_solver<Pde, Basis, TD_solver>::get_geometric_factors() const {
 //-------------------------------------------------------------------------
 template <class Pde, class Basis, class TD_solver>
 arma::mat
-Dgtd_solver<Pde, Basis, TD_solver>::get_phys_node_coords() const {
+Dgtd_solver<Pde, Basis, TD_solver>::get_phys_node_coords() {
 
-  Mesh::Process_mesh_data pmd(mesh_name);
   std::vector<size_t> elems;
-  for (const auto region : pmd.import_gmsh_regions()) {
-    elems = pmd.get_ordered_elems(pmd.get_finite_elems(region));
+  for (const auto region : processed_mesh.import_gmsh_regions()) {
+    elems = processed_mesh.get_ordered_elems(
+        processed_mesh.get_finite_elems(region));
   }
 
   Geometric_operations go(mesh_name);
@@ -115,8 +116,6 @@ Dgtd_solver<Pde, Basis, TD_solver>::get_phys_node_coords() const {
 //-------------------------------------------------------------------------
 template <class Pde, class Basis, class TD_solver>
 double Dgtd_solver<Pde, Basis, TD_solver>::get_time_step() {
-
-  Mesh::Process_mesh_data pmd(mesh_name);
 
   const double min_node_dist(this->get_min_node_dist());
   const double dt(this->dt_factor*min_node_dist/(2*M_PI));

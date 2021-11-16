@@ -2,6 +2,7 @@
 #include "pde/advection.h"
 #include "spatial_solver/basis_functions/legendre_basis.h"
 #include "spatial_solver/mesh/check_mesh.h"
+#include "spatial_solver/mesh/process_mesh_data.h"
 #include "temporal_solver/low_storage_runge_kutta.h"
 #include "tools/input.h"
 
@@ -27,6 +28,7 @@ int main(int argc, char *argv[]) {
   stream_welcome_message();
 
   Mesh::Check_mesh check_mesh(argv[1]);
+  DG::Mesh::Process_mesh_data processed_mesh(argv[1]);
 
   Input input(argv[2]);
 
@@ -35,7 +37,7 @@ int main(int argc, char *argv[]) {
         Advection,
         DG::Legendre_basis,
         TD::Low_storage_runge_kutta>
-        dgtd(argv[1], input);
+        dgtd(argv[1], processed_mesh, input);
 
     Advection advection(input.material_params.front(), input.upwind_param);
 
