@@ -8,19 +8,19 @@
 
 namespace Mesh {
 Check_mesh::Check_mesh(const std::string &filename)
-    : mesh_name(filename), 
-    begin_specifier(
+    : mesh_name{filename}, 
+    begin_specifier{
           {{"$MeshFormat", false},
            {"$PhysicalNames", false},
            {"$Entities", false},
            {"$Nodes", false},
-           {"$Elements", false}}),
-      end_specifier(
+           {"$Elements", false}}},
+      end_specifier{
           {{"$EndMeshFormat", false},
            {"$EndPhysicalNames", false},
            {"$EndEntities", false},
            {"$EndNodes", false},
-           {"$EndElements", false}}) {
+           {"$EndElements", false}}} {
   this->check_mesh_existence();
   this->check_empty_lines();
   this->check_specifiers();
@@ -29,7 +29,7 @@ Check_mesh::Check_mesh(const std::string &filename)
 //-------------------------------------------------------------------------
 void Check_mesh::check_mesh_existence() {
 
-  std::ifstream mesh_file(this->mesh_name.c_str());
+  std::ifstream mesh_file{this->mesh_name.c_str()};
   boost::filesystem::path cur_file_path(mesh_name);
   std::string file_extension(boost::filesystem::extension(cur_file_path));
 
@@ -47,14 +47,14 @@ void Check_mesh::check_mesh_existence() {
 }
 //-------------------------------------------------------------------------
 void Check_mesh::check_empty_lines() {
-  std::ifstream mesh_file(this->mesh_name.c_str());
+  std::ifstream mesh_file{this->mesh_name.c_str()};
 
   if (mesh_file.peek() == std::ifstream::traits_type::eof()) {
     throw Mesh_error("File seems to be empty.", this->mesh_name);
   }
 
   std::string line;
-  for (size_t line_number(1); std::getline(mesh_file, line);
+  for (size_t line_number{1}; std::getline(mesh_file, line);
        ++line_number) {
     if (line.empty()) {
       throw Mesh_error(
@@ -67,11 +67,11 @@ void Check_mesh::check_empty_lines() {
 //-------------------------------------------------------------------------
 void Check_mesh::check_specifiers() {
 
-  std::ifstream mesh_file(this->mesh_name.c_str());
+  std::ifstream mesh_file{this->mesh_name.c_str()};
 
   // Look for begin and end specifiers in mesh file
   // ----------------------------------------------
-  size_t line_number(1);
+  size_t line_number{1};
   for (std::string line; std::getline(mesh_file, line); ++line_number) {
     const std::string first_word(Import::get_entry<std::string>(line));
 
@@ -113,7 +113,7 @@ void Check_mesh::check_mesh_format() {
 
   /// Checks the mesh version tag
   /// ==============================
-  std::ifstream mesh_file(this->mesh_name.c_str());
+  std::ifstream mesh_file{this->mesh_name.c_str()};
 
   for (std::string line; std::getline(mesh_file, line);) {
     if (line == "$MeshFormat")

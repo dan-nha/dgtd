@@ -19,7 +19,7 @@ std::vector<double> Jacobi_basis::get_gauss_lobatto_nodes(
   } else {
     std::vector<double> gl_nodes(polynomial_order + 1);
     gl_nodes.front() = -1.0;
-    for (size_t i(1); i < polynomial_order; ++i) {
+    for (size_t i{1}; i < polynomial_order; ++i) {
       gl_nodes[i] = this->get_gauss_jacobi_nodes(
           alpha + 1.0, beta + 1.0, polynomial_order - 2)(i - 1);
     }
@@ -64,8 +64,8 @@ double Jacobi_basis::get_jacobi_polynomial(
                alpha, beta, polynomial_order, position)
         .back();
   } else {
-    std::vector<double> initial_jacobi_poly =
-        get_recurrence_initiation(alpha, beta, polynomial_order, position);
+    std::vector<double> initial_jacobi_poly{
+        get_recurrence_initiation(alpha, beta, polynomial_order, position)};
     jacobi_poly[0] = initial_jacobi_poly.front();
     jacobi_poly[1] = initial_jacobi_poly.back();
 
@@ -132,9 +132,9 @@ arma::mat Jacobi_basis::get_jacobi_polynomial_matrix(
         "Polynomial order must be a positive integer.");
   }
 
-  arma::vec diagonal(get_matrix_diagonal(alpha, beta, polynomial_order));
-  arma::vec subdiagonal(
-      get_matrix_subdiagonal(alpha, beta, polynomial_order));
+  arma::vec diagonal{get_matrix_diagonal(alpha, beta, polynomial_order)};
+  arma::vec subdiagonal{
+      get_matrix_subdiagonal(alpha, beta, polynomial_order)};
 
   return get_tridiagonal_matrix(diagonal, subdiagonal, polynomial_order);
 };
@@ -164,7 +164,7 @@ arma::vec Jacobi_basis::get_matrix_diagonal(
   arma::vec diagonal(polynomial_order + 1);
   diagonal(0) = (beta - alpha) / (2 + beta + alpha);
 
-  for (size_t j(1); j < polynomial_order + 1; ++j) {
+  for (size_t j{1}; j < polynomial_order + 1; ++j) {
     const double aux(2. * j + alpha + beta);
     diagonal(j) = (beta * beta - alpha * alpha) / aux / (aux + 2.);
   }
@@ -179,7 +179,7 @@ arma::vec Jacobi_basis::get_matrix_subdiagonal(
 
   arma::vec subdiagonal(polynomial_order);
 
-  for (size_t j(1); j < polynomial_order + 1; ++j) {
+  for (size_t j{1}; j < polynomial_order + 1; ++j) {
     const double aux(2. * j + alpha + beta);
     subdiagonal(j - 1) = 2. / aux *
                          std::sqrt(
@@ -227,7 +227,7 @@ void Jacobi_basis::apply_reccurence(
       sqrt((alpha + 1) * (beta + 1) / (alpha + beta + 3))};
   double a_new, b_new, aux;
 
-  for (size_t i = 0; i < polynomial_order - 1; ++i) {
+  for (size_t i{0}; i < polynomial_order - 1; ++i) {
     aux = 2. * double(i + 1) + alpha + beta;
 
     a_new = 2. / (aux + 2.) *

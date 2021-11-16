@@ -28,7 +28,7 @@ const T get_entry(const std::string line, const size_t entry_number = 1) {
   std::stringstream sstr(line);
   T output;
 
-  for (size_t n = 0; n < entry_number; ++n)
+  for (size_t n{0}; n < entry_number; ++n)
     sstr >> output;
 
   return output;
@@ -53,7 +53,7 @@ const std::vector<T> get_multiple_entries(
   std::stringstream sstr(line);
   std::vector<T> output;
 
-  for (size_t entry_num = 0; entry_num < number_of_entries; ++entry_num) {
+  for (size_t entry_num{0}; entry_num < number_of_entries; ++entry_num) {
     T tmp;
     sstr >> tmp;
     output.push_back(tmp);
@@ -150,7 +150,7 @@ skip_lines(std::ifstream &file, const size_t line_skip) {
     return;
 
   std::string line;
-  for (size_t n = 0; n < line_skip; ++n) {
+  for (size_t n{0}; n < line_skip; ++n) {
     std::getline(file, line);
   }
 }
@@ -174,7 +174,7 @@ inline static void skip_lines(
   line_number += line_skip;
 
   std::string line;
-  for (size_t n = 0; n < line_skip; ++n) {
+  for (size_t n{0}; n < line_skip; ++n) {
     std::getline(file, line);
   }
 }

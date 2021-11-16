@@ -11,8 +11,8 @@ arma::mat Elementwise_operations<Basis>::get_vandermonde_matrix() const {
 
   arma::mat vand_mat(this->nodes.size(), this->polynomial_order + 1);
 
-  for (size_t node_idx = 0; node_idx < this->nodes.size(); ++node_idx) {
-    for (size_t n = 0; n <= this->polynomial_order; ++n) {
+  for (size_t node_idx{0}; node_idx < this->nodes.size(); ++node_idx) {
+    for (size_t n{0}; n <= this->polynomial_order; ++n) {
       vand_mat(node_idx, n) =
           this->basis.get_polynomial(n, this->nodes[node_idx]);
     }
@@ -58,8 +58,8 @@ Elementwise_operations<Basis>::get_grad_vandermonde_matrix() const {
   arma::mat grad_vand_mat(
       this->nodes.size(), this->polynomial_order + 1, arma::fill::zeros);
 
-  for (size_t node_idx = 0; node_idx < this->nodes.size(); ++node_idx) {
-    for (size_t n = 0; n <= this->polynomial_order; ++n) {
+  for (size_t node_idx{0}; node_idx < this->nodes.size(); ++node_idx) {
+    for (size_t n{0}; n <= this->polynomial_order; ++n) {
       grad_vand_mat(node_idx, n) =
           this->basis.get_polynomial_gradient(n, this->nodes[node_idx]);
     }

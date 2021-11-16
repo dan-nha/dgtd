@@ -7,16 +7,16 @@ namespace DG::Mesh {
 
 Process_mesh_data::Process_mesh_data(const std::string &_mesh_name)
     : Import_mesh_data(_mesh_name), 
-      mesh_name(_mesh_name),
-      dimension(Import_mesh_data::get_dimension()) {}
+      mesh_name{_mesh_name},
+      dimension{Import_mesh_data::get_dimension()} {}
 //-------------------------------------------------------------------------
 std::vector<size_t>
 Process_mesh_data::get_finite_elems(const std::string &region_name) {
 
   auto phys_name_map(Import_mesh_data::import_gmsh_physical_names());
   if (phys_name_map.contains(region_name)) {
-    const size_t region_tag(phys_name_map[region_name]);
-    if (is_region(region_tag) == false) {
+    const size_t region_tag{phys_name_map[region_name]};
+    if (this->is_region(region_tag) == false) {
       throw std::invalid_argument(
           std::string() + "__FILE__" + ":" + std::to_string(__LINE__) +
           ": "
@@ -51,7 +51,7 @@ std::vector<size_t> Process_mesh_data::get_ordered_regions() {
   std::vector<size_t> first_elems;
   std::map<size_t, size_t> first_elem_to_region;
 
-  std::vector regions(Import_mesh_data::import_gmsh_regions());
+  std::vector regions{Import_mesh_data::import_gmsh_regions()};
   for (const auto region : regions) {
     const size_t first_elem(
         this->get_ordered_elems(this->get_finite_elems(region)).front());
@@ -60,8 +60,8 @@ std::vector<size_t> Process_mesh_data::get_ordered_regions() {
   }
 
   std::vector<size_t> ordered_regions;
-  std::vector<size_t> ordered_first_elems(
-      this->get_ordered_elems(first_elems));
+  std::vector<size_t> ordered_first_elems{
+      this->get_ordered_elems(first_elems)};
   for (const auto elem : ordered_first_elems) {
     ordered_regions.push_back(first_elem_to_region[elem]);
   }
@@ -132,8 +132,8 @@ Process_mesh_data::get_min_elem_size(const std::string &region_name) {
 
   auto phys_name_map(Import_mesh_data::import_gmsh_physical_names());
   if (phys_name_map.contains(region_name)) {
-    const size_t region_tag(phys_name_map[region_name]);
-    if (is_region(region_tag) == false) {
+    const size_t region_tag{phys_name_map[region_name]};
+    if (this->is_region(region_tag) == false) {
       throw std::invalid_argument(
           std::string() + "__FILE__" + ":" + std::to_string(__LINE__) +
           ": "
@@ -151,7 +151,7 @@ Process_mesh_data::get_min_elem_size(const std::string &region_name) {
 //----
 double Process_mesh_data::get_min_elem_size(const size_t region_tag) {
 
-  std::vector elem_tags(this->get_finite_elems(region_tag));
+  std::vector elem_tags{this->get_finite_elems(region_tag)};
 
   std::vector<double> elem_sizes;
   for (const auto elem_tag : elem_tags) {

@@ -15,7 +15,7 @@ Import_mesh_data::Import_mesh_data(const std::string &filename)
 //-----------------------------------------------------------------------
 size_t Import_mesh_data::get_dimension() const {
 
-  std::ifstream mesh_file(mesh_name.c_str());
+  std::ifstream mesh_file{mesh_name.c_str()};
   this->goto_mesh_section("$PhysicalNames", mesh_file);
 
   Import::skip_lines(mesh_file, 1);
@@ -23,7 +23,7 @@ size_t Import_mesh_data::get_dimension() const {
   std::vector<size_t> phys_group_dims;
   for (std::string line; std::getline(mesh_file, line);) {
 
-    std::string line_entry(Import::get_entry<std::string>(line));
+    std::string line_entry{Import::get_entry<std::string>(line)};
 
     if (line_entry == "$EndPhysicalNames")
       break;
@@ -44,7 +44,7 @@ size_t Import_mesh_data::get_dimension() const {
 //-----------------------------------------------------------------------
 size_t Import_mesh_data::import_number_of_nodes() const {
 
-  std::ifstream mesh_file(mesh_name.c_str());
+  std::ifstream mesh_file{mesh_name.c_str()};
   Import_mesh_data::goto_mesh_section("$Nodes", mesh_file);
 
   return Import::get_next_line_entry<size_t>(mesh_file, 2);
@@ -52,21 +52,21 @@ size_t Import_mesh_data::import_number_of_nodes() const {
 //-----------------------------------------------------------------------
 std::vector<size_t> Import_mesh_data::import_gmsh_regions() const {
 
-  std::ifstream mesh_file(this->mesh_name.c_str());
+  std::ifstream mesh_file{this->mesh_name.c_str()};
   this->goto_mesh_section("$PhysicalNames", mesh_file);
 
-  const size_t num_phys_groups(
-      Import::get_next_line_entry<size_t>(mesh_file));
+  const size_t num_phys_groups{
+      Import::get_next_line_entry<size_t>(mesh_file)};
 
   std::vector<size_t> regions;
-  for (size_t phys_group_counter = 0;
+  for (size_t phys_group_counter{0};
        phys_group_counter < num_phys_groups;
        ++phys_group_counter) {
 
     std::string line;
     std::getline(mesh_file, line);
-    const size_t region_entity( 
-        physgroup_entity_table(this->dimension)[Physical_group.region]);
+    const size_t region_entity{ 
+        physgroup_entity_table(this->dimension)[Physical_group.region]};
     if(Import::get_entry<size_t>(line) == region_entity) {
       regions.push_back(Import::get_entry<size_t>(line, 2));
     }
@@ -84,21 +84,21 @@ std::vector<size_t> Import_mesh_data::import_gmsh_regions() const {
 //-----------------------------------------------------------------------
 std::vector<size_t> Import_mesh_data::import_gmsh_contours() const {
 
-  std::ifstream mesh_file(this->mesh_name.c_str());
+  std::ifstream mesh_file{this->mesh_name.c_str()};
   this->goto_mesh_section("$PhysicalNames", mesh_file);
 
-  const size_t num_phys_groups(
-      Import::get_next_line_entry<size_t>(mesh_file));
+  const size_t num_phys_groups{
+      Import::get_next_line_entry<size_t>(mesh_file)};
 
   std::vector<size_t> contours;
-  for (size_t phys_group_counter = 0;
+  for (size_t phys_group_counter{0};
        phys_group_counter < num_phys_groups;
        ++phys_group_counter) {
 
     std::string line;
     std::getline(mesh_file, line);
-    const size_t contour_entity( 
-        physgroup_entity_table(this->dimension)[Physical_group.contour]);
+    const size_t contour_entity{ 
+        physgroup_entity_table(this->dimension)[Physical_group.contour]};
     if(Import::get_entry<size_t>(line) == contour_entity) {
       contours.push_back(Import::get_entry<size_t>(line, 2));
     }
@@ -117,21 +117,21 @@ std::vector<size_t> Import_mesh_data::import_gmsh_contours() const {
 std::map<std::string, size_t>
 Import_mesh_data::import_gmsh_physical_names() {
 
-  std::ifstream mesh_file(this->mesh_name.c_str());
+  std::ifstream mesh_file{this->mesh_name.c_str()};
   this->goto_mesh_section("$PhysicalNames", mesh_file);
 
-  const size_t phys_group_number(
-      Import::get_next_line_entry<size_t>(mesh_file));
+  const size_t phys_group_number{
+      Import::get_next_line_entry<size_t>(mesh_file)};
 
   std::map<std::string, size_t> physical_group_info;
-  for (size_t phys_group_counter = 0;
+  for (size_t phys_group_counter{0};
        phys_group_counter < phys_group_number;
        ++phys_group_counter) {
 
     std::string line;
     std::getline(mesh_file, line);
-    const size_t phys_group_tag(Import::get_entry<size_t>(line, 2));
-    std::string phys_group_name(Import::get_entry<std::string>(line, 3));
+    const size_t phys_group_tag{Import::get_entry<size_t>(line, 2)};
+    std::string phys_group_name{Import::get_entry<std::string>(line, 3)};
     phys_group_name.erase(
         std::remove(phys_group_name.begin(), phys_group_name.end(), '\"'),
         phys_group_name.end());
@@ -151,14 +151,14 @@ Import_mesh_data::import_gmsh_physical_names() {
 std::map<size_t, std::vector<size_t>>
 Import_mesh_data::import_gmsh_entities(const size_t entity_type) {
 
-  std::ifstream mesh_file(this->mesh_name.c_str());
+  std::ifstream mesh_file{this->mesh_name.c_str()};
   size_t line_number; // Only used for warning message below
   this->goto_mesh_section("$Entities", mesh_file, line_number);
 
   // Import number of point, curve, surface, and volume entities in the
   // mesh
-  std::vector<size_t> number_of_each_entity(
-      Import::get_next_line_entries<size_t>(mesh_file, line_number));
+  std::vector<size_t> number_of_each_entity{
+      Import::get_next_line_entries<size_t>(mesh_file, line_number)};
   size_t &num_entities(number_of_each_entity[entity_type]);
 
   // Set the line and position in the line from which to read the physical
@@ -169,8 +169,8 @@ Import_mesh_data::import_gmsh_entities(const size_t entity_type) {
   } else {
     phys_tag_pos = 8;
 
-    size_t number_of_previous_entities(0);
-    for (size_t prev_entity_type(0); prev_entity_type < entity_type;
+    size_t number_of_previous_entities{0};
+    for (size_t prev_entity_type{0}; prev_entity_type < entity_type;
          ++prev_entity_type) {
       number_of_previous_entities +=
           number_of_each_entity[prev_entity_type];
@@ -182,17 +182,18 @@ Import_mesh_data::import_gmsh_entities(const size_t entity_type) {
   // Import entity tag and associated physical tags for this entity
   std::map<size_t, std::vector<size_t>> entity_info;
   std::string line;
-  for (size_t entity_tag_idx(0);
+  for (size_t entity_tag_idx{0};
        entity_tag_idx < num_entities && getline(mesh_file, line);
        ++entity_tag_idx, ++line_number) {
 
-    size_t entity_tag(Import::get_entry<size_t>(line, 1));
+    size_t entity_tag{Import::get_entry<size_t>(line, 1)};
 
     // BUG in gmsh: in 2D and 3D the 8-th line entry is not a size_t but a
     // double contrary to the documentation
     // (https://gmsh.info/doc/texinfo/gmsh.html). Hence, a double is
     // imported and casted onto a size_t
-    size_t num_phys_tags(Import::get_entry<double>(line, phys_tag_pos));
+    size_t num_phys_tags{
+      static_cast<size_t>(Import::get_entry<double>(line, phys_tag_pos))};
 
     if (num_phys_tags > 1 && entity_type == this->dimension) {
       throw Mesh_error(
@@ -209,7 +210,7 @@ Import_mesh_data::import_gmsh_entities(const size_t entity_type) {
           // BUG in gmsh: same bug as above
           Import::get_entry<double>(line, phys_tag_pos + 1));
     } else {
-      for (size_t phys_tag_idx(1); phys_tag_idx <= num_phys_tags;
+      for (size_t phys_tag_idx{1}; phys_tag_idx <= num_phys_tags;
            ++phys_tag_idx) {
         physical_tags.push_back(
             // BUG in gmsh: same bug as above
@@ -229,14 +230,14 @@ Import_mesh_data::import_gmsh_nodes() {
   std::ifstream mesh_file(this->mesh_name.c_str());
   this->goto_mesh_section("$Nodes", mesh_file);
 
-  size_t num_entity_blocks(Import::get_next_line_entry<size_t>(mesh_file));
+  size_t num_entity_blocks{Import::get_next_line_entry<size_t>(mesh_file)};
 
   std::map<size_t, std::vector<double>> node_map;
-  for (size_t entity_block(1); entity_block <= num_entity_blocks;
+  for (size_t entity_block{1}; entity_block <= num_entity_blocks;
        ++entity_block) {
 
-    std::vector<size_t> block_info(
-        Import::get_next_line_entries<size_t>(mesh_file));
+    std::vector<size_t> block_info{
+        Import::get_next_line_entries<size_t>(mesh_file)};
     size_t block_entity_dim, block_entity_tag, parametric_flag,
         block_num_nodes;
     if (block_info.size() == 4 && block_info[0] <= this->dimension &&
@@ -257,7 +258,7 @@ Import_mesh_data::import_gmsh_nodes() {
             this->mesh_name);
       }
       std::vector<size_t> node_tags;
-      for (size_t node(0); node < block_num_nodes; ++node) {
+      for (size_t node{0}; node < block_num_nodes; ++node) {
         // BUG in gmsh: Reading in double instead of size_t and then
         // perform a static cast to size_t due to bug in 2D and 3D mesh
         // file produced by gmsh
@@ -286,14 +287,15 @@ Import_mesh_data::import_gmsh_elements(
     const size_t entity_type,
     const size_t entity_tag) {
 
-  std::ifstream mesh_file(this->mesh_name.c_str());
+  std::ifstream mesh_file{this->mesh_name.c_str()};
   this->goto_mesh_section("$Elements", mesh_file);
 
   std::map<size_t, std::vector<size_t>> element_info;
 
-  size_t num_entity_blocks(Import::get_next_line_entry<size_t>(mesh_file));
+  size_t num_entity_blocks{
+    Import::get_next_line_entry<size_t>(mesh_file)};
 
-  for (size_t entity_block(0); entity_block < num_entity_blocks;
+  for (size_t entity_block{0}; entity_block < num_entity_blocks;
        ++entity_block) {
     std::vector<size_t> line_entries(
         Import::get_next_line_entries<size_t>(mesh_file));
@@ -305,10 +307,10 @@ Import_mesh_data::import_gmsh_elements(
           line_entries[1] == entity_tag) {
 
         size_t num_elements_in_block(line_entries[3]);
-        for (size_t element(0); element < num_elements_in_block;
+        for (size_t element{0}; element < num_elements_in_block;
              ++element) {
-          std::vector<size_t> element_and_nodes(
-              Import::get_next_line_entries<size_t>(mesh_file));
+          std::vector<size_t> element_and_nodes{
+              Import::get_next_line_entries<size_t>(mesh_file)};
           size_t &element_tag(element_and_nodes[0]);
           std::vector<size_t> node_tags(
               element_and_nodes.begin() + 1, element_and_nodes.end());
@@ -330,13 +332,13 @@ Import_mesh_data::get_mesh_section_info() const {
 
   std::vector<mesh_section_info> mesh_section_info;
 
-  std::fstream mesh_file(this->mesh_name.c_str());
+  std::fstream mesh_file{this->mesh_name.c_str()};
   std::string line;
 
-  for (size_t line_number(1); std::getline(mesh_file, line);
-       ++line_number) {
+  for (size_t line_number{1}; std::getline(mesh_file, line);
+      ++line_number) {
 
-    const std::string first_word(Import::get_entry<std::string>(line));
+    const std::string first_word{Import::get_entry<std::string>(line)};
 
     for (const auto &specifier : Mesh::specifier_list) {
       if (first_word == specifier) {
@@ -353,8 +355,8 @@ void Import_mesh_data::goto_mesh_section(
     const std::string &specifier,
     std::ifstream &mesh_file) const {
 
-  std::vector<mesh_section_info> section_info(
-      this->get_mesh_section_info());
+  std::vector<mesh_section_info> section_info{
+      this->get_mesh_section_info()};
   std::string cur_specifier;
   size_t cur_mesh_pos;
 
@@ -372,8 +374,8 @@ void Import_mesh_data::goto_mesh_section(
     std::ifstream &mesh_file,
     size_t &line_number) const {
 
-  std::vector<mesh_section_info> section_info(
-      this->get_mesh_section_info());
+  std::vector<mesh_section_info> section_info{
+      this->get_mesh_section_info()};
   std::string cur_specifier;
   size_t cur_mesh_pos;
   size_t cur_line_num;
