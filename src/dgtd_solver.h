@@ -9,6 +9,7 @@
 
 #include <armadillo>
 #include <string>
+#include <map>
 
 namespace DGTD {
 using namespace DG;
@@ -18,12 +19,31 @@ public:
   Dgtd_solver(Mesh::Process_mesh_data &processed_mesh, 
       const Input &input);
 
-  arma::mat get_solution(Pde pde);
+  arma::mat get_solution(Pde &pde);
+
+  void initialize_dg_scheme(
+      Pde &pde,
+      std::map<size_t, arma::mat> &region_field,
+      std::map<size_t, arma::mat> &region_phys_node_coords,
+      std::map<size_t, std::vector<double>> &region_geo_factors);
+
+  arma::mat evolve_dg_scheme(
+      Pde &pde,
+      TD_solver &lsrk,
+      const arma::mat &fields,
+      const double time,
+      const std::vector<double> &geo_factors) const;
+
+  arma::mat assemble_global_solution(
+      std::map<size_t, arma::mat> &region_field,
+      const size_t num_nodes,
+      const size_t num_elems);
 
   arma::mat get_phys_node_coords();
+  arma::mat get_phys_node_coords(const size_t region);
 
-  // Get geometric factors for all elements
   std::vector<double> get_geometric_factors();
+  std::vector<double> get_geometric_factors(const size_t region);
 
   double get_time_step();
 
