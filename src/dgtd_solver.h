@@ -1,8 +1,9 @@
 #ifndef DGTD_SOLVER_H
 #define DGTD_SOLVER_H
 
-#include "spatial_solver/mesh/process_mesh_data.h"
 #include "tools/input.h"
+#include "spatial_solver/mesh/process_mesh_data.h"
+#include "spatial_solver/geometric_operations.h"
 
 #include <armadillo>
 #include <string>
@@ -11,9 +12,8 @@ namespace DGTD {
 
 template <class Pde, class Basis, class TD_solver> class Dgtd_solver {
 public:
-  Dgtd_solver(const std::string &mesh_name, 
-      DG::Mesh::Process_mesh_data &processed_mesh, 
-      Input &input);
+  Dgtd_solver(DG::Mesh::Process_mesh_data &processed_mesh, 
+      const Input &input);
 
   arma::mat get_solution(Pde pde);
 
@@ -29,12 +29,12 @@ public:
   bool is_field_name_valid(const std::string &field_name) const;
 
 private:
-  const std::string mesh_name;
-  DG::Mesh::Process_mesh_data processed_mesh;
-  Input input;
-  Basis basis;
+  DG::Mesh::Process_mesh_data &processed_mesh;
+  const Input &input;
+  DG::Geometric_operations geo;
+  const Basis basis;
   const size_t polynomial_order;
-  std::vector<double> quad_nodes;
+  const std::vector<double> quad_nodes;
   const double end_time;
   const double dt_factor;
   const double time_step;

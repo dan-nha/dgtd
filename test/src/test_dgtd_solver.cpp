@@ -35,7 +35,7 @@ const std::string
 Input input(config);
 
 Dgtd_solver<Advection, Legendre_basis, Low_storage_runge_kutta>
-    dgtd(mesh, processed_mesh, input);
+    dgtd(processed_mesh, input);
 
 const double upwind_param(1.);
 Advection advection(2*M_PI, upwind_param);

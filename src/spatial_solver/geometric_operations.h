@@ -14,9 +14,9 @@ namespace DG {
  * integrals operating on physical coordinates to those unit (reference)
  * integrals.
  */
-class Geometric_operations : public Mesh::Process_mesh_data {
+class Geometric_operations {
 public:
-  Geometric_operations(const std::string &mesh_filename);
+  Geometric_operations(Mesh::Process_mesh_data &processed_mesh);
 
   /**
    * @brief Conversion factor (Jacobian) between reference unit integral
@@ -44,6 +44,9 @@ public:
       const size_t region_tag);
 
   double get_min_distance(const std::vector<double> coords) const;
+
+private:
+  Mesh::Process_mesh_data &processed_mesh;
 };
 } // namespace DG
 

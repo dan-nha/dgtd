@@ -1,5 +1,4 @@
 #include "spatial_solver/elementwise_operations.h"
-#include "spatial_solver/geometric_operations.h"
 #include "temporal_solver/low_storage_runge_kutta.h"
 #include "tools/custom_errors.h"
 #include "tools/output.h"
@@ -14,11 +13,10 @@ using namespace TD;
 
 template <class Pde, class Basis, class TD_solver>
 Dgtd_solver<Pde, Basis, TD_solver>::Dgtd_solver(
-    const std::string &_mesh_name,
     Mesh::Process_mesh_data &_processed_mesh,
-    Input &_input)
-    : mesh_name(_mesh_name), 
-      processed_mesh(_processed_mesh),
+    const Input &_input)
+    : processed_mesh(_processed_mesh),
+      geo(_processed_mesh),
       input(_input),
       polynomial_order(_input.polynomial_order),
       quad_nodes(basis.get_quad_nodes(_input.polynomial_order)),
@@ -44,7 +42,6 @@ arma::mat Dgtd_solver<Pde, Basis, TD_solver>::get_solution(Pde pde) {
   out.store_coords(phys_node_coords);
 
   arma::mat fields(pde.get_initial_values(phys_node_coords));
-
 
   TD_solver lsrk(
       this->input.runge_kutta_order, this->input.runge_kutta_stages);
@@ -83,10 +80,9 @@ Dgtd_solver<Pde, Basis, TD_solver>::get_geometric_factors() {
         processed_mesh.get_finite_elems(region));
   }
 
-  Geometric_operations go(mesh_name);
   std::vector<double> geo_factors;
   for (const auto elem: elems) {
-    geo_factors.push_back(go.get_geometric_factor(elem));
+    geo_factors.push_back(geo.get_geometric_factor(elem));
   }
 
   return geo_factors;
@@ -102,12 +98,11 @@ Dgtd_solver<Pde, Basis, TD_solver>::get_phys_node_coords() {
         processed_mesh.get_finite_elems(region));
   }
 
-  Geometric_operations go(mesh_name);
   arma::mat phys_node_coords(this->quad_nodes.size(), elems.size());
   for (size_t n(0); n < elems.size(); ++n) {
     for (size_t m(0); m < quad_nodes.size(); ++m) {
       phys_node_coords(m, n) =
-          go.convert_ref_to_phys_coord(this->quad_nodes[m], elems[n]);
+          geo.convert_ref_to_phys_coord(this->quad_nodes[m], elems[n]);
     }
   }
 
@@ -127,8 +122,7 @@ double Dgtd_solver<Pde, Basis, TD_solver>::get_time_step() {
 template <class Pde, class Basis, class TD_solver>
 double Dgtd_solver<Pde, Basis, TD_solver>::get_min_node_dist() {
 
-  Geometric_operations go(mesh_name);
-  return go.get_min_node_dist(this->quad_nodes);
+  return geo.get_min_node_dist(this->quad_nodes);
 }
 //-------------------------------------------------------------------------
 template <class Pde, class Basis, class TD_solver>

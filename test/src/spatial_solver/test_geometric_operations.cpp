@@ -9,7 +9,8 @@ const std::string mesh_dir("/test/src/spatial_solver/mesh/test_meshes/");
 
 BOOST_AUTO_TEST_SUITE(geometric_operations);
 
-Geometric_operations line(root_dir + mesh_dir + "line.msh");
+Mesh::Process_mesh_data processed_mesh(root_dir + mesh_dir + "line.msh");
+Geometric_operations line(processed_mesh);
 
 BOOST_AUTO_TEST_CASE(geometric_factor) {
   BOOST_TEST(line.get_geometric_factor(3) == 2. / 1.491565972698457);

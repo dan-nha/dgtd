@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
         Advection,
         DG::Legendre_basis,
         TD::Low_storage_runge_kutta>
-        dgtd(argv[1], processed_mesh, input);
+        dgtd(processed_mesh, input);
 
     Advection advection(input.material_params.front(), input.upwind_param);
 
